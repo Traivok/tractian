@@ -4,6 +4,7 @@ import swaggerUi                      from 'swagger-ui-express';
 import { RegisterRoutes }             from './routes';
 import dotenv                         from 'dotenv';
 import * as process                   from 'process';
+import mongoose                       from 'mongoose';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Config and Init
@@ -12,6 +13,8 @@ dotenv.config();
 
 const server = express();
 const port   = process.env.PORT ?? 3000;
+
+const mongooseConnection = mongoose.createConnection('mongodb://localhost:27017/tractian');
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Middlewares

@@ -27,13 +27,41 @@
 						"content": {
 							"application/json": {
 								"schema": {
+									"items": {
+										"properties": {
+											"name": {
+												"type": "string"
+											}
+										},
+										"required": [
+											"name"
+										],
+										"type": "object"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "SaveUser",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
 									"properties": {
-										"message": {
+										"name": {
 											"type": "string"
 										}
 									},
 									"required": [
-										"message"
+										"name"
 									],
 									"type": "object"
 								}
@@ -42,7 +70,25 @@
 					}
 				},
 				"security": [],
-				"parameters": []
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"name": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"name"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
 			}
 		},
 		"/users/{userId}": {
