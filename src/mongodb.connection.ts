@@ -1,8 +1,10 @@
 import mongoose from 'mongoose';
 
-const connectionString: string = 'mongodb://localhost:27017/my-db';
+// TODO extract connection string from an env var / or a config service
+const connectionString = 'mongodb://localhost:27017/my-db';
 
-export const MongooseClient = mongoose.createConnection(connectionString,
+export const MongooseClient = mongoose.createConnection(
+    connectionString,
     {
         autoIndex:  true,
         autoCreate: true,

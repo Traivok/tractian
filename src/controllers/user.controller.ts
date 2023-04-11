@@ -11,7 +11,7 @@ export class UserController {
 
     @Post('/')
     @SuccessResponse(201, 'Created')
-    public async saveUser(@Body() body: { name: string }): Promise<{ name: string }> {
+    public async saveUser(@Body() body: { name: string, email: string }): Promise<{ name: string }> {
         const user = new User(body);
         await user.save();
         return user;
