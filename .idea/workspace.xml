@@ -5,16 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0a1ccf29-b601-408b-a424-c2d50dc889ec" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/dtos/identifiable.dto.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/services/company.service.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/lib/validation.lib.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/middlewares/not-found.middleware.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/middlewares/unknown-error.middleware.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/middlewares/validation-error.middleware.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controllers/company.controller.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/company.controller.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controllers/user.controller.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/user.controller.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dtos/company.dto.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/dtos/company.dto.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/repositories/asset.repo.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/repositories/asset.repo.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/company.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/company.service.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/swagger.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/swagger.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -65,6 +64,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/lib" />
       <recent name="$PROJECT_DIR$/src/dtos" />
       <recent name="$PROJECT_DIR$/src/dtos/company" />
     </key>
@@ -111,7 +111,7 @@
       <workItem from="1681299085792" duration="7054000" />
       <workItem from="1681330085651" duration="732000" />
       <workItem from="1681391485340" duration="484000" />
-      <workItem from="1681476759121" duration="998000" />
+      <workItem from="1681476759121" duration="5596000" />
     </task>
     <servers />
   </component>

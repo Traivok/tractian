@@ -1,10 +1,14 @@
-import express, { Request, Response } from 'express';
-import morgan                         from 'morgan';
-import swaggerUi                      from 'swagger-ui-express';
-import { RegisterRoutes }             from './routes';
-import dotenv                         from 'dotenv';
-import * as process                   from 'process';
-import mongoose                       from 'mongoose';
+import express, { NextFunction, Request, Response } from 'express';
+import morgan                                       from 'morgan';
+import swaggerUi                                    from 'swagger-ui-express';
+import { RegisterRoutes }                           from './routes';
+import dotenv                                       from 'dotenv';
+import * as process                                 from 'process';
+import mongoose                                     from 'mongoose';
+import { ValidateError }                            from '@tsoa/runtime';
+import { ValidationErrorHandler }                   from './middlewares/validation-error.middleware';
+import { NotFoundErrorHandler }                     from './middlewares/not-found.middleware';
+import { UnknownErrorHandler }                      from './middlewares/unknown-error.middleware';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Config and Init
@@ -29,10 +33,18 @@ server.use('/docs', swaggerUi.serve, async (_req: Request, res: Response) => {
 
 server.use(morgan('dev'));
 
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Routing
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 RegisterRoutes(server);
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Validate Requests and Responses
+////////////////////////////////////////////////////////////////////////////////////////////////////
+server.use(ValidationErrorHandler);
+server.use(NotFoundErrorHandler);
+server.use(UnknownErrorHandler);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Starting server

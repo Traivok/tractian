@@ -1,9 +1,10 @@
 import { Body, Example, Get, Path, Post, Response, Route, SuccessResponse, Tags } from 'tsoa';
-import Company                                                                    from '../repositories/company.repo';
 import { CompanyDto, CreateCompanyDto }                                           from '../dtos/company.dto';
 import { Controller }                                                             from '@tsoa/runtime';
 import { Types }                                                                  from 'mongoose';
 import CompanyService                                                             from '../services/company.service';
+import companyService                                                             from '../services/company.service';
+import { InvalidateEmpty, ValidateObjectIds }                                     from '../lib/validation.lib';
 
 
 @Route('companies')
@@ -14,7 +15,7 @@ export class CompanyController extends Controller {
     @Get('/')
     @SuccessResponse(200, 'Ok')
     public async getAllCompanies(): Promise<CompanyDto[]> {
-        return Company.find().lean();
+        return companyService.findAll();
     }
 
     @Post('/')
@@ -25,28 +26,21 @@ export class CompanyController extends Controller {
         industry:    'auto parts manufacturer',
     })
     public async saveCompany(@Body() body: CreateCompanyDto): Promise<CompanyDto> {
-        const company = new Company(body);
-        await company.save();
-        return company.toJSON({ flattenMaps: false, virtuals: true });
+        const company = await companyService.create(body);
+
+        return InvalidateEmpty(company);
     }
 
     @Get('/{companyId}')
     @SuccessResponse(200, 'Ok')
-    @Response(404, 'Company Not Found.')
-    public async getCompany(@Path('companyId') companyId: Types.ObjectId): Promise<CompanyDto | undefined> {
-        if (!Types.ObjectId.isValid(companyId)) {
-            this.setStatus(400);
-            return;
-        }
+    @Response(404, 'Company Not Found')
+    @Response(400, 'Bad Request')
+    public async getCompany(@Path('companyId') companyId: Types.ObjectId): Promise<CompanyDto> {
+        ValidateObjectIds({ companyId });
 
         const maybeCompany = await this.companyService.findOne(companyId);
 
-        if (maybeCompany === null) {
-            this.setStatus(404);
-            return;
-        }
-
-        return maybeCompany;
+        return InvalidateEmpty(maybeCompany);
     }
 }
 

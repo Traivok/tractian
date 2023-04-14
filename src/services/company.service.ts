@@ -14,7 +14,7 @@ class CompanyService {
     }
 
     async findOne(id: Types.ObjectId): Promise<CompanyDto | null> {
-        const maybeCompany = await Company.findOne({ _id: id });
+        const maybeCompany = await Company.findById(id);
 
         if (maybeCompany === null) {
             return null;
