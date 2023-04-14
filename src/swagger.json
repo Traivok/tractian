@@ -96,7 +96,7 @@
 						"type": "string"
 					},
 					"companyId": {
-						"type": "string"
+						"$ref": "#/components/schemas/Types.ObjectId"
 					},
 					"role": {
 						"$ref": "#/components/schemas/RoleType"

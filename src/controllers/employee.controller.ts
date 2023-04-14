@@ -25,8 +25,7 @@ export class EmployeeController {
     @SuccessResponse(200, 'Ok')
     @OperationId('listEmployees')
     public async list(@Path('companyId') companyId: Types.ObjectId): Promise<UserDto[]> {
-        ValidateObjectIds({ companyId });
-        return userService.findAll(companyId);
+        return userService.findAll({ companyId });
     }
 
     @Post('/')
@@ -39,7 +38,7 @@ export class EmployeeController {
     })
     public async create(@Path('companyId') companyId: Types.ObjectId,
                         @Body() body: CreateUserDto): Promise<UserDto> {
-        return InvalidateEmpty(await userService.create(companyId, body));
+        return await userService.create({ companyId, ...body });
     }
 
     @Get('/{userId}')
@@ -47,8 +46,7 @@ export class EmployeeController {
     @OperationId('getEmployee')
     public async getUser(@Path('companyId') companyId: Types.ObjectId,
                          @Path() userId: Types.ObjectId): Promise<UserDto> {
-        ValidateObjectIds({ userId, companyId });
-        return InvalidateEmpty(await userService.findOne(userId, companyId));
+        return await userService.findOne({ _id: userId, companyId });
     }
 
     @Patch('/{userId}')
@@ -58,7 +56,7 @@ export class EmployeeController {
                         @Path('userId') userId: Types.ObjectId,
                         @Body() body: UpdateUserDto): Promise<UserDto> {
         ValidateObjectIds({ userId, companyId });
-        return InvalidateEmpty(await userService.update(userId, companyId, body));
+        return InvalidateEmpty(await userService.update({ _id: userId, companyId }, body));
     }
 
     @Delete('/{userId}')
@@ -66,7 +64,7 @@ export class EmployeeController {
     @OperationId('deleteUser')
     public async delete(@Path() companyId: Types.ObjectId, @Path('userId') userId: Types.ObjectId): Promise<void> {
         ValidateObjectIds({ userId, companyId });
-        InvalidateEmpty(await userService.delete(userId, companyId));
+        InvalidateEmpty(await userService.delete({ _id: userId, companyId }));
     }
 }
 

@@ -57,7 +57,7 @@ const models: TsoaRoute.Models = {
             "_id": {"ref":"Types.ObjectId","required":true},
             "name": {"dataType":"string","required":true},
             "email": {"dataType":"string","required":true},
-            "companyId": {"dataType":"string","required":true},
+            "companyId": {"ref":"Types.ObjectId","required":true},
             "role": {"ref":"RoleType","required":true},
         },
         "additionalProperties": false,

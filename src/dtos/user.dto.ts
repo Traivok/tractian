@@ -1,10 +1,11 @@
 import { RoleType }     from '../repositories/user.repo';
 import { Identifiable } from './identifiable.dto';
+import { Types }        from 'mongoose';
 
 export interface UserDto extends Identifiable {
     name: string;
     email: string;
-    companyId: string;
+    companyId: Types.ObjectId;
     role: RoleType;
 }
 
