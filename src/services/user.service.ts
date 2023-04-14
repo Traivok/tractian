@@ -11,22 +11,29 @@ class UserService {
     }
 
     async findAll(companyId?: Types.ObjectId): Promise<UserDto[]> {
-        if (companyId !== undefined) {
-            return User.find({ companyId }).lean();
-        } else {
-            return User.find().lean();
+        const users = await ( companyId ?
+                              User.find({ companyId }) :
+                              User.find() );
+
+        return users.map(user => user.toJSON({ flattenMaps: false, virtuals: true }));
+    }
+
+    async findOne(id: Types.ObjectId, companyId: Types.ObjectId): Promise<UserDto | undefined> {
+        const maybeUser = await User.findOne({ _id: id, companyId });
+
+        if (maybeUser) {
+            return maybeUser.toJSON({ flattenMaps: false, virtuals: true });
         }
     }
 
-    async findOne(id: Types.ObjectId, companyId: Types.ObjectId): Promise<UserDto | null> {
-        const maybeUser = await User.findOne({ _id: id, companyId });
-
-        return maybeUser === null ? null : maybeUser.toJSON({ flattenMaps: false, virtuals: true });
-    }
-
-    async update(id: Types.ObjectId, companyId: Types.ObjectId, dto: UpdateUserDto): Promise<UserDto | null> {
+    async update(id: Types.ObjectId, companyId: Types.ObjectId, dto: UpdateUserDto): Promise<UserDto | undefined> {
         ValidateObjectIds({ id, companyId });
-        return User.findOneAndUpdate({ _id: id, companyId }, dto, { new: true });
+
+        const maybeUser = await User.findOneAndUpdate({ _id: id, companyId }, dto, { new: true });
+
+        if (maybeUser) {
+            return maybeUser.toJSON({ flattenMaps: false, virtuals: true });
+        }
     }
 
     async delete(id: Types.ObjectId, companyId: Types.ObjectId): Promise<UserDto | null> {

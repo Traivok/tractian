@@ -29,7 +29,9 @@ export class CompanyController extends Controller {
     @SuccessResponse(200, 'Ok')
     @OperationId('listCompanies')
     public async list(@Query() industry?: string): Promise<CompanyDto[]> {
-        return companyService.findAll(industry);
+        return industry !== undefined ?
+               companyService.findAll({ industry }) :
+               companyService.findAll();
     }
 
     @Post('/')
@@ -41,9 +43,7 @@ export class CompanyController extends Controller {
     })
     @OperationId('createCompany')
     public async create(@Body() body: CreateCompanyDto): Promise<CompanyDto> {
-        const company = await companyService.create(body);
-
-        return InvalidateEmpty(company);
+        return await companyService.create(body);
     }
 
     @Patch('/{companyId}')
@@ -55,17 +55,14 @@ export class CompanyController extends Controller {
     })
     @OperationId('createCompany')
     public async update(@Path() companyId: Types.ObjectId, @Body() body: CreateCompanyDto): Promise<CompanyDto> {
-        const company = await companyService.update(companyId, body);
-
-        return InvalidateEmpty(company);
+        return await companyService.update(companyId, body);
     }
 
     @Delete('/{companyId}')
     @SuccessResponse(204, 'No Content')
     @OperationId('deleteCompany')
     public async delete(@Path() companyId: Types.ObjectId): Promise<void> {
-        ValidateObjectIds({ companyId });
-        InvalidateEmpty(await companyService.delete(companyId));
+        await companyService.delete(companyId);
     }
 
     @Get('/{companyId}')
@@ -74,11 +71,7 @@ export class CompanyController extends Controller {
     @Response(400, 'Bad Request')
     @OperationId('getCompany')
     public async get(@Path('companyId') companyId: Types.ObjectId): Promise<CompanyDto> {
-        ValidateObjectIds({ companyId });
-
-        const maybeCompany = await this.companyService.findOne(companyId);
-
-        return InvalidateEmpty(maybeCompany);
+        return await this.companyService.findOne(companyId);
     }
 }
 

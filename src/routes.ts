@@ -19,27 +19,30 @@ const models: TsoaRoute.Models = {
     "CompanyDto": {
         "dataType": "refObject",
         "properties": {
+            "id": {"dataType":"string","required":true},
             "_id": {"ref":"Types.ObjectId","required":true},
             "name": {"dataType":"string","required":true},
             "description": {"dataType":"string"},
             "industry": {"dataType":"string"},
+            "users": {"dataType":"array","array":{"dataType":"refAlias","ref":"Types.ObjectId"},"required":true},
+            "units": {"dataType":"array","array":{"dataType":"refAlias","ref":"Types.ObjectId"},"required":true},
         },
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Pick_CompanyDto.Exclude_keyofCompanyDto.users-or-units-or-_id__": {
+    "Pick_CompanyDto.Exclude_keyofCompanyDto.users-or-units-or-_id-or-id__": {
         "dataType": "refAlias",
         "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"name":{"dataType":"string","required":true},"description":{"dataType":"string"},"industry":{"dataType":"string"}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Omit_CompanyDto.users-or-units-or-_id_": {
+    "Omit_CompanyDto.users-or-units-or-_id-or-id_": {
         "dataType": "refAlias",
-        "type": {"ref":"Pick_CompanyDto.Exclude_keyofCompanyDto.users-or-units-or-_id__","validators":{}},
+        "type": {"ref":"Pick_CompanyDto.Exclude_keyofCompanyDto.users-or-units-or-_id-or-id__","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "CreateCompanyDto": {
         "dataType": "refAlias",
-        "type": {"ref":"Omit_CompanyDto.users-or-units-or-_id_","validators":{}},
+        "type": {"ref":"Omit_CompanyDto.users-or-units-or-_id-or-id_","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "RoleType": {
@@ -50,6 +53,8 @@ const models: TsoaRoute.Models = {
     "UserDto": {
         "dataType": "refObject",
         "properties": {
+            "id": {"dataType":"string","required":true},
+            "_id": {"ref":"Types.ObjectId","required":true},
             "name": {"dataType":"string","required":true},
             "email": {"dataType":"string","required":true},
             "companyId": {"dataType":"string","required":true},

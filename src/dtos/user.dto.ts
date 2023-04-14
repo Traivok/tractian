@@ -1,6 +1,7 @@
-import { RoleType } from '../repositories/user.repo';
+import { RoleType }     from '../repositories/user.repo';
+import { Identifiable } from './identifiable.dto';
 
-export interface UserDto {
+export interface UserDto extends Identifiable {
     name: string;
     email: string;
     companyId: string;

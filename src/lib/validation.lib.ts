@@ -24,7 +24,7 @@ export function ValidateObjectIds(ids: Record<string, any>): Record<string, Type
  * @desc Throws {ValidateError} if some id does not match MongoDB.ObjectId spec.
  * @throws NotFound
  */
-export function InvalidateEmpty<T>(content?: T, validateEmpties = false): NonNullable<T> {
+export function InvalidateEmpty<T>(content?: T | undefined | null, validateEmpties = false): NonNullable<T> {
     const emptyContent = validateEmpties && ( isEmptyArray(content) || isEmptyObject(content) );
 
     if (content === null || content === undefined || emptyContent) {
