@@ -9,8 +9,12 @@ class CompanyService {
         return company.toJSON({ flattenMaps: false, virtuals: true });
     }
 
-    async findAll(): Promise<CompanyDto[]> {
-        return Company.find().lean();
+    async findAll(industry?: string): Promise<CompanyDto[]> {
+        if (industry !== undefined) {
+            return Company.find({ industry }).lean();
+        } else {
+            return Company.find().lean();
+        }
     }
 
     async findOne(id: Types.ObjectId): Promise<CompanyDto | null> {

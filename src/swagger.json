@@ -55,6 +55,56 @@
 			},
 			"CreateCompanyDto": {
 				"$ref": "#/components/schemas/Omit_CompanyDto.users-or-units-or-_id_"
+			},
+			"RoleType": {
+				"type": "string",
+				"enum": [
+					"admin",
+					"technician"
+				]
+			},
+			"UserDto": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"companyId": {
+						"type": "string"
+					},
+					"role": {
+						"$ref": "#/components/schemas/RoleType"
+					}
+				},
+				"required": [
+					"name",
+					"email",
+					"companyId",
+					"role"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CreateUserDto": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"role": {
+						"$ref": "#/components/schemas/RoleType"
+					}
+				},
+				"required": [
+					"name",
+					"email"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {}
@@ -71,7 +121,7 @@
 	"paths": {
 		"/companies": {
 			"get": {
-				"operationId": "GetAllCompanies",
+				"operationId": "listCompanies",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -91,10 +141,19 @@
 					"companies"
 				],
 				"security": [],
-				"parameters": []
+				"parameters": [
+					{
+						"in": "query",
+						"name": "industry",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			},
 			"post": {
-				"operationId": "SaveCompany",
+				"operationId": "createCompany",
 				"responses": {
 					"201": {
 						"description": "Created",
@@ -135,7 +194,7 @@
 		},
 		"/companies/{companyId}": {
 			"get": {
-				"operationId": "GetCompany",
+				"operationId": "getCompany",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -172,7 +231,7 @@
 		},
 		"/companies/{companyId}/employees": {
 			"get": {
-				"operationId": "GetAllUsers",
+				"operationId": "listEmployees",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -180,15 +239,7 @@
 							"application/json": {
 								"schema": {
 									"items": {
-										"properties": {
-											"name": {
-												"type": "string"
-											}
-										},
-										"required": [
-											"name"
-										],
-										"type": "object"
+										"$ref": "#/components/schemas/UserDto"
 									},
 									"type": "array"
 								}
@@ -196,6 +247,9 @@
 						}
 					}
 				},
+				"tags": [
+					"employees"
+				],
 				"security": [],
 				"parameters": [
 					{
@@ -203,34 +257,28 @@
 						"name": "companyId",
 						"required": true,
 						"schema": {
-							"format": "double",
-							"type": "number"
+							"$ref": "#/components/schemas/Types.ObjectId"
 						}
 					}
 				]
 			},
 			"post": {
-				"operationId": "SaveUser",
+				"operationId": "Create",
 				"responses": {
 					"201": {
 						"description": "Created",
 						"content": {
 							"application/json": {
 								"schema": {
-									"properties": {
-										"name": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"name"
-									],
-									"type": "object"
+									"$ref": "#/components/schemas/UserDto"
 								}
 							}
 						}
 					}
 				},
+				"tags": [
+					"employees"
+				],
 				"security": [],
 				"parameters": [
 					{
@@ -238,8 +286,7 @@
 						"name": "companyId",
 						"required": true,
 						"schema": {
-							"format": "double",
-							"type": "number"
+							"$ref": "#/components/schemas/Types.ObjectId"
 						}
 					}
 				],
@@ -248,19 +295,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"properties": {
-									"email": {
-										"type": "string"
-									},
-									"name": {
-										"type": "string"
-									}
-								},
-								"required": [
-									"email",
-									"name"
-								],
-								"type": "object"
+								"$ref": "#/components/schemas/CreateUserDto"
 							}
 						}
 					}
@@ -269,36 +304,38 @@
 		},
 		"/companies/{companyId}/employees/{userId}": {
 			"get": {
-				"operationId": "GetUser",
+				"operationId": "getEmployee",
 				"responses": {
 					"200": {
 						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-									"properties": {
-										"message": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"message"
-									],
-									"type": "object"
+									"$ref": "#/components/schemas/UserDto"
 								}
 							}
 						}
 					}
 				},
+				"tags": [
+					"employees"
+				],
 				"security": [],
 				"parameters": [
+					{
+						"in": "path",
+						"name": "companyId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/Types.ObjectId"
+						}
+					},
 					{
 						"in": "path",
 						"name": "userId",
 						"required": true,
 						"schema": {
-							"format": "double",
-							"type": "number"
+							"$ref": "#/components/schemas/Types.ObjectId"
 						}
 					}
 				]

@@ -5,7 +5,7 @@ import { Controller, ValidationService, FieldErrors, ValidateError, TsoaRoute, H
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { CompanyController } from './controllers/company.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { UserController } from './controllers/user.controller';
+import { EmployeeController } from './controllers/employee.controller';
 import type { RequestHandler, Router } from 'express';
 
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -42,6 +42,32 @@ const models: TsoaRoute.Models = {
         "type": {"ref":"Omit_CompanyDto.users-or-units-or-_id_","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "RoleType": {
+        "dataType": "refAlias",
+        "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["admin"]},{"dataType":"enum","enums":["technician"]}],"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "UserDto": {
+        "dataType": "refObject",
+        "properties": {
+            "name": {"dataType":"string","required":true},
+            "email": {"dataType":"string","required":true},
+            "companyId": {"dataType":"string","required":true},
+            "role": {"ref":"RoleType","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CreateUserDto": {
+        "dataType": "refObject",
+        "properties": {
+            "name": {"dataType":"string","required":true},
+            "email": {"dataType":"string","required":true},
+            "role": {"ref":"RoleType"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };
 const validationService = new ValidationService(models);
 
@@ -54,10 +80,11 @@ export function RegisterRoutes(app: Router) {
     // ###########################################################################################################
         app.get('/companies',
             ...(fetchMiddlewares<RequestHandler>(CompanyController)),
-            ...(fetchMiddlewares<RequestHandler>(CompanyController.prototype.getAllCompanies)),
+            ...(fetchMiddlewares<RequestHandler>(CompanyController.prototype.list)),
 
-            function CompanyController_getAllCompanies(request: any, response: any, next: any) {
+            function CompanyController_list(request: any, response: any, next: any) {
             const args = {
+                    industry: {"in":"query","name":"industry","dataType":"string"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -69,7 +96,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new CompanyController();
 
 
-              const promise = controller.getAllCompanies.apply(controller, validatedArgs as any);
+              const promise = controller.list.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, 200, next);
             } catch (err) {
                 return next(err);
@@ -78,9 +105,9 @@ export function RegisterRoutes(app: Router) {
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.post('/companies',
             ...(fetchMiddlewares<RequestHandler>(CompanyController)),
-            ...(fetchMiddlewares<RequestHandler>(CompanyController.prototype.saveCompany)),
+            ...(fetchMiddlewares<RequestHandler>(CompanyController.prototype.create)),
 
-            function CompanyController_saveCompany(request: any, response: any, next: any) {
+            function CompanyController_create(request: any, response: any, next: any) {
             const args = {
                     body: {"in":"body","name":"body","required":true,"ref":"CreateCompanyDto"},
             };
@@ -94,7 +121,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new CompanyController();
 
 
-              const promise = controller.saveCompany.apply(controller, validatedArgs as any);
+              const promise = controller.create.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, 201, next);
             } catch (err) {
                 return next(err);
@@ -103,9 +130,9 @@ export function RegisterRoutes(app: Router) {
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/companies/:companyId',
             ...(fetchMiddlewares<RequestHandler>(CompanyController)),
-            ...(fetchMiddlewares<RequestHandler>(CompanyController.prototype.getCompany)),
+            ...(fetchMiddlewares<RequestHandler>(CompanyController.prototype.get)),
 
-            function CompanyController_getCompany(request: any, response: any, next: any) {
+            function CompanyController_get(request: any, response: any, next: any) {
             const args = {
                     companyId: {"in":"path","name":"companyId","required":true,"ref":"Types.ObjectId"},
             };
@@ -119,7 +146,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new CompanyController();
 
 
-              const promise = controller.getCompany.apply(controller, validatedArgs as any);
+              const promise = controller.get.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, 200, next);
             } catch (err) {
                 return next(err);
@@ -127,12 +154,12 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/companies/:companyId/employees',
-            ...(fetchMiddlewares<RequestHandler>(UserController)),
-            ...(fetchMiddlewares<RequestHandler>(UserController.prototype.getAllUsers)),
+            ...(fetchMiddlewares<RequestHandler>(EmployeeController)),
+            ...(fetchMiddlewares<RequestHandler>(EmployeeController.prototype.list)),
 
-            function UserController_getAllUsers(request: any, response: any, next: any) {
+            function EmployeeController_list(request: any, response: any, next: any) {
             const args = {
-                    companyId: {"in":"path","name":"companyId","required":true,"dataType":"double"},
+                    companyId: {"in":"path","name":"companyId","required":true,"ref":"Types.ObjectId"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -141,10 +168,10 @@ export function RegisterRoutes(app: Router) {
             try {
                 validatedArgs = getValidatedArgs(args, request, response);
 
-                const controller = new UserController();
+                const controller = new EmployeeController();
 
 
-              const promise = controller.getAllUsers.apply(controller, validatedArgs as any);
+              const promise = controller.list.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, 200, next);
             } catch (err) {
                 return next(err);
@@ -152,13 +179,13 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.post('/companies/:companyId/employees',
-            ...(fetchMiddlewares<RequestHandler>(UserController)),
-            ...(fetchMiddlewares<RequestHandler>(UserController.prototype.saveUser)),
+            ...(fetchMiddlewares<RequestHandler>(EmployeeController)),
+            ...(fetchMiddlewares<RequestHandler>(EmployeeController.prototype.create)),
 
-            function UserController_saveUser(request: any, response: any, next: any) {
+            function EmployeeController_create(request: any, response: any, next: any) {
             const args = {
-                    companyId: {"in":"path","name":"companyId","required":true,"dataType":"double"},
-                    body: {"in":"body","name":"body","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"email":{"dataType":"string","required":true},"name":{"dataType":"string","required":true}}},
+                    companyId: {"in":"path","name":"companyId","required":true,"ref":"Types.ObjectId"},
+                    body: {"in":"body","name":"body","required":true,"ref":"CreateUserDto"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -167,10 +194,10 @@ export function RegisterRoutes(app: Router) {
             try {
                 validatedArgs = getValidatedArgs(args, request, response);
 
-                const controller = new UserController();
+                const controller = new EmployeeController();
 
 
-              const promise = controller.saveUser.apply(controller, validatedArgs as any);
+              const promise = controller.create.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, 201, next);
             } catch (err) {
                 return next(err);
@@ -178,12 +205,13 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/companies/:companyId/employees/:userId',
-            ...(fetchMiddlewares<RequestHandler>(UserController)),
-            ...(fetchMiddlewares<RequestHandler>(UserController.prototype.getUser)),
+            ...(fetchMiddlewares<RequestHandler>(EmployeeController)),
+            ...(fetchMiddlewares<RequestHandler>(EmployeeController.prototype.getUser)),
 
-            function UserController_getUser(request: any, response: any, next: any) {
+            function EmployeeController_getUser(request: any, response: any, next: any) {
             const args = {
-                    userId: {"in":"path","name":"userId","required":true,"dataType":"double"},
+                    companyId: {"in":"path","name":"companyId","required":true,"ref":"Types.ObjectId"},
+                    userId: {"in":"path","name":"userId","required":true,"ref":"Types.ObjectId"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -192,7 +220,7 @@ export function RegisterRoutes(app: Router) {
             try {
                 validatedArgs = getValidatedArgs(args, request, response);
 
-                const controller = new UserController();
+                const controller = new EmployeeController();
 
 
               const promise = controller.getUser.apply(controller, validatedArgs as any);

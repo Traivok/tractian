@@ -1,5 +1,5 @@
-import { Body, Example, Get, Path, Post, Response, Route, SuccessResponse, Tags } from 'tsoa';
-import { CompanyDto, CreateCompanyDto }                                           from '../dtos/company.dto';
+import { Body, Example, Get, OperationId, Path, Post, Query, Response, Route, SuccessResponse, Tags } from 'tsoa';
+import { CompanyDto, CreateCompanyDto }                                                               from '../dtos/company.dto';
 import { Controller }                                                             from '@tsoa/runtime';
 import { Types }                                                                  from 'mongoose';
 import CompanyService                                                             from '../services/company.service';
@@ -14,8 +14,9 @@ export class CompanyController extends Controller {
 
     @Get('/')
     @SuccessResponse(200, 'Ok')
-    public async getAllCompanies(): Promise<CompanyDto[]> {
-        return companyService.findAll();
+    @OperationId('listCompanies')
+    public async list(@Query() industry?: string): Promise<CompanyDto[]> {
+        return companyService.findAll(industry);
     }
 
     @Post('/')
@@ -25,7 +26,8 @@ export class CompanyController extends Controller {
         description: 'Freios e ABS.',
         industry:    'auto parts manufacturer',
     })
-    public async saveCompany(@Body() body: CreateCompanyDto): Promise<CompanyDto> {
+    @OperationId('createCompany')
+    public async create(@Body() body: CreateCompanyDto): Promise<CompanyDto> {
         const company = await companyService.create(body);
 
         return InvalidateEmpty(company);
@@ -35,7 +37,8 @@ export class CompanyController extends Controller {
     @SuccessResponse(200, 'Ok')
     @Response(404, 'Company Not Found')
     @Response(400, 'Bad Request')
-    public async getCompany(@Path('companyId') companyId: Types.ObjectId): Promise<CompanyDto> {
+    @OperationId('getCompany')
+    public async get(@Path('companyId') companyId: Types.ObjectId): Promise<CompanyDto> {
         ValidateObjectIds({ companyId });
 
         const maybeCompany = await this.companyService.findOne(companyId);
