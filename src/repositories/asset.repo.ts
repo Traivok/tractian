@@ -1,5 +1,6 @@
 import { MongooseClient as client } from '../mongodb.connection';
 import { Schema }                   from 'mongoose';
+import mongooseLeanVirtuals         from 'mongoose-lean-virtuals';
 
 export const StatusValues = [ 'Running', 'Alerting', 'Stopped' ] as const;
 export type StatusType = ( typeof StatusValues )[number]; // getsthe type union of the possible values above
@@ -64,6 +65,8 @@ AssetSchema.virtual('needMaintenance')
     .get(function () {
         return ( this.nextMaintenanceDate !== undefined ) && ( this.nextMaintenanceDate.getTime() <= Date.now() );
     });
+
+AssetSchema.plugin(mongooseLeanVirtuals);
 
 const Asset = client.model('Asset', AssetSchema);
 

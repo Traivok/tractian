@@ -5,18 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0a1ccf29-b601-408b-a424-c2d50dc889ec" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/controllers/asset.controller.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/controllers/company.controller.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/controllers/unit.controller.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dtos/asset.dto.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dtos/company.dto.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dtos/unit.dto.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/dtos/identifiable.dto.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/services/company.service.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controllers/company.controller.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/company.controller.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controllers/user.controller.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/user.controller.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dtos/user.dto.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/dtos/user.dto.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mongodb.connection.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/mongodb.connection.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/repositories/user.repo.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/repositories/user.repo.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dtos/company.dto.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/dtos/company.dto.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repositories/asset.repo.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/repositories/asset.repo.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/swagger.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/swagger.json" afterDir="false" />
     </list>
@@ -89,6 +86,16 @@
       <option name="specificationPath" value="$PROJECT_DIR$/src/swagger.json" />
       <method v="2" />
     </configuration>
+    <configuration name="start:dev" type="js.build_tools.npm" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="start:dev" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -100,7 +107,11 @@
       <updated>1681144560774</updated>
       <workItem from="1681144561813" duration="305000" />
       <workItem from="1681144875277" duration="10569000" />
-      <workItem from="1681251283318" duration="4373000" />
+      <workItem from="1681251283318" duration="6230000" />
+      <workItem from="1681299085792" duration="7054000" />
+      <workItem from="1681330085651" duration="732000" />
+      <workItem from="1681391485340" duration="484000" />
+      <workItem from="1681476759121" duration="998000" />
     </task>
     <servers />
   </component>

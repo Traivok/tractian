@@ -5,7 +5,58 @@
 		"parameters": {},
 		"requestBodies": {},
 		"responses": {},
-		"schemas": {},
+		"schemas": {
+			"Types.ObjectId": {
+				"type": "string"
+			},
+			"CompanyDto": {
+				"properties": {
+					"_id": {
+						"$ref": "#/components/schemas/Types.ObjectId"
+					},
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"industry": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"_id",
+					"name"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_CompanyDto.Exclude_keyofCompanyDto.users-or-units-or-_id__": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"industry": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_CompanyDto.users-or-units-or-_id_": {
+				"$ref": "#/components/schemas/Pick_CompanyDto.Exclude_keyofCompanyDto.users-or-units-or-_id__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"CreateCompanyDto": {
+				"$ref": "#/components/schemas/Omit_CompanyDto.users-or-units-or-_id_"
+			}
+		},
 		"securitySchemes": {}
 	},
 	"info": {
@@ -18,6 +69,104 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
+		"/companies": {
+			"get": {
+				"operationId": "GetAllCompanies",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/CompanyDto"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"companies"
+				],
+				"security": [],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "SaveCompany",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CompanyDto"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"name": "Industria Freios Supremos",
+											"description": "Freios e ABS.",
+											"industry": "auto parts manufacturer"
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"companies"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateCompanyDto"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/companies/{companyId}": {
+			"get": {
+				"operationId": "GetCompany",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CompanyDto"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Company Not Found."
+					}
+				},
+				"tags": [
+					"companies"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "companyId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/Types.ObjectId"
+						}
+					}
+				]
+			}
+		},
 		"/users": {
 			"get": {
 				"operationId": "GetAllUsers",
