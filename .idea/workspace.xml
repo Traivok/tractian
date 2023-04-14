@@ -5,11 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0a1ccf29-b601-408b-a424-c2d50dc889ec" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/middlewares/duplicate-key.middleware.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controllers/company.controller.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/company.controller.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dtos/company.dto.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/dtos/company.dto.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controllers/employee.controller.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/employee.controller.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dtos/user.dto.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/dtos/user.dto.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/company.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/company.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/user.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/user.service.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/swagger.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/swagger.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -107,7 +110,7 @@
       <workItem from="1681299085792" duration="7054000" />
       <workItem from="1681330085651" duration="732000" />
       <workItem from="1681391485340" duration="484000" />
-      <workItem from="1681476759121" duration="9810000" />
+      <workItem from="1681476759121" duration="13008000" />
     </task>
     <servers />
   </component>

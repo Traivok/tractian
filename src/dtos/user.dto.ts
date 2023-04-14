@@ -7,8 +7,11 @@ export interface UserDto {
     role: RoleType;
 }
 
-export interface CreateUserDto {
+// UserDto without companyId and optional role
+export type CreateUserDto = {
     name: string;
     email: string;
     role?: RoleType;
 }
+
+export type UpdateUserDto = Partial<CreateUserDto>;

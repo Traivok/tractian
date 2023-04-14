@@ -1,9 +1,22 @@
-import { Body, Get, OperationId, Path, Post, Route, SuccessResponse, Tags } from 'tsoa';
-import { CreateUserDto, UserDto }                                           from '../dtos/user.dto';
-import userService                                                          from '../services/user.service';
-import { InvalidateEmpty, ValidateObjectIds }                               from '../lib/validation.lib';
-import { Types }                                                            from 'mongoose';
-import { NotFoundError }                                                    from '../middlewares/not-found.middleware';
+import { Body, Delete, Example, Get, OperationId, Patch, Path, Post, Route, SuccessResponse, Tags } from 'tsoa';
+import {
+    CreateUserDto,
+    UpdateUserDto,
+    UserDto,
+}                                                                                                   from '../dtos/user.dto';
+import userService
+                                                                                                    from '../services/user.service';
+import {
+    InvalidateEmpty,
+    ValidateObjectIds,
+}                                                                                                   from '../lib/validation.lib';
+import { Types }                                                                                    from 'mongoose';
+import {
+    NotFoundError,
+}                                                                                                   from '../middlewares/not-found.middleware';
+import {
+    CreateCompanyDto,
+}                                                                                                   from '../dtos/company.dto';
 
 @Route('companies/{companyId}/employees')
 @Tags('employees')
@@ -18,6 +31,12 @@ export class EmployeeController {
 
     @Post('/')
     @SuccessResponse(201, 'Created')
+    @OperationId('createEmployee')
+    @Example<CreateUserDto>({
+        name:  'John Doe',
+        email: 'john.doe@mail.com',
+        role:  'technician',
+    })
     public async create(@Path('companyId') companyId: Types.ObjectId,
                         @Body() body: CreateUserDto): Promise<UserDto> {
         return InvalidateEmpty(await userService.create(companyId, body));
@@ -29,14 +48,25 @@ export class EmployeeController {
     public async getUser(@Path('companyId') companyId: Types.ObjectId,
                          @Path() userId: Types.ObjectId): Promise<UserDto> {
         ValidateObjectIds({ userId, companyId });
-        const user = InvalidateEmpty(await userService.findOne(userId));
+        return InvalidateEmpty(await userService.findOne(userId, companyId));
+    }
 
-        // Checks if found user is employee of a company
-        if (!companyId.equals(user.companyId)) {
-            throw new NotFoundError('No users found affiliated with this company');
-        }
+    @Patch('/{userId}')
+    @SuccessResponse(200, 'Ok')
+    @OperationId('updateEmployee')
+    public async update(@Path('companyId') companyId: Types.ObjectId,
+                        @Path('userId') userId: Types.ObjectId,
+                        @Body() body: UpdateUserDto): Promise<UserDto> {
+        ValidateObjectIds({ userId, companyId });
+        return InvalidateEmpty(await userService.update(userId, companyId, body));
+    }
 
-        return user;
+    @Delete('/{userId}')
+    @SuccessResponse(204, 'No Content')
+    @OperationId('deleteUser')
+    public async delete(@Path() companyId: Types.ObjectId, @Path('userId') userId: Types.ObjectId): Promise<void> {
+        ValidateObjectIds({ userId, companyId });
+        InvalidateEmpty(await userService.delete(userId, companyId));
     }
 }
 

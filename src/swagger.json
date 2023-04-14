@@ -89,6 +89,24 @@
 			},
 			"CreateUserDto": {
 				"properties": {
+					"role": {
+						"$ref": "#/components/schemas/RoleType"
+					},
+					"email": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"email",
+					"name"
+				],
+				"type": "object"
+			},
+			"Partial_CreateUserDto_": {
+				"properties": {
 					"name": {
 						"type": "string"
 					},
@@ -99,12 +117,11 @@
 						"$ref": "#/components/schemas/RoleType"
 					}
 				},
-				"required": [
-					"name",
-					"email"
-				],
 				"type": "object",
-				"additionalProperties": false
+				"description": "Make all properties in T optional"
+			},
+			"UpdateUserDto": {
+				"$ref": "#/components/schemas/Partial_CreateUserDto_"
 			}
 		},
 		"securitySchemes": {}
@@ -196,8 +213,8 @@
 			"patch": {
 				"operationId": "createCompany",
 				"responses": {
-					"201": {
-						"description": "Created",
+					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -333,7 +350,7 @@
 				]
 			},
 			"post": {
-				"operationId": "Create",
+				"operationId": "createEmployee",
 				"responses": {
 					"201": {
 						"description": "Created",
@@ -341,6 +358,15 @@
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/UserDto"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"name": "John Doe",
+											"email": "john.doe@mail.com",
+											"role": "technician"
+										}
+									}
 								}
 							}
 						}
@@ -385,6 +411,83 @@
 								}
 							}
 						}
+					}
+				},
+				"tags": [
+					"employees"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "companyId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/Types.ObjectId"
+						}
+					},
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/Types.ObjectId"
+						}
+					}
+				]
+			},
+			"patch": {
+				"operationId": "updateEmployee",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UserDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"employees"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "companyId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/Types.ObjectId"
+						}
+					},
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/Types.ObjectId"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateUserDto"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "deleteUser",
+				"responses": {
+					"204": {
+						"description": "No Content"
 					}
 				},
 				"tags": [

@@ -47,7 +47,7 @@ export class CompanyController extends Controller {
     }
 
     @Patch('/{companyId}')
-    @SuccessResponse(201, 'Created')
+    @SuccessResponse(200, 'Ok')
     @Example<CreateCompanyDto>({
         name:        'Industria Freios Supremos',
         description: 'Freios e ABS.',

@@ -9,6 +9,7 @@ import { ValidateError }                            from '@tsoa/runtime';
 import { ValidationErrorHandler }                   from './middlewares/validation-error.middleware';
 import { NotFoundErrorHandler }                     from './middlewares/not-found.middleware';
 import { UnknownErrorHandler }                      from './middlewares/unknown-error.middleware';
+import { DuplicateKeyErrorHandler }                 from './middlewares/duplicate-key.middleware';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Config and Init
@@ -44,6 +45,7 @@ RegisterRoutes(server);
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 server.use(ValidationErrorHandler);
 server.use(NotFoundErrorHandler);
+server.use(DuplicateKeyErrorHandler);
 server.use(UnknownErrorHandler);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

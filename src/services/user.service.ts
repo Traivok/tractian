@@ -1,6 +1,7 @@
-import { Types }                  from 'mongoose';
-import { CreateUserDto, UserDto } from '../dtos/user.dto';
-import User                       from '../repositories/user.repo';
+import { Types }                                 from 'mongoose';
+import { CreateUserDto, UpdateUserDto, UserDto } from '../dtos/user.dto';
+import User                                      from '../repositories/user.repo';
+import { ValidateObjectIds }                     from '../lib/validation.lib';
 
 class UserService {
     async create(companyId: Types.ObjectId, dto: CreateUserDto): Promise<UserDto | null> {
@@ -17,14 +18,19 @@ class UserService {
         }
     }
 
-    async findOne(id: Types.ObjectId): Promise<UserDto | null> {
-        const maybeUser = await User.findById(id);
+    async findOne(id: Types.ObjectId, companyId: Types.ObjectId): Promise<UserDto | null> {
+        const maybeUser = await User.findOne({ _id: id, companyId });
 
-        if (maybeUser === null) {
-            return null;
-        }
+        return maybeUser === null ? null : maybeUser.toJSON({ flattenMaps: false, virtuals: true });
+    }
 
-        return maybeUser.toJSON({ flattenMaps: false, virtuals: true });
+    async update(id: Types.ObjectId, companyId: Types.ObjectId, dto: UpdateUserDto): Promise<UserDto | null> {
+        ValidateObjectIds({ id, companyId });
+        return User.findOneAndUpdate({ _id: id, companyId }, dto, { new: true });
+    }
+
+    async delete(id: Types.ObjectId, companyId: Types.ObjectId): Promise<UserDto | null> {
+        return User.findOneAndDelete({ _id: id, companyId });
     }
 }
 
