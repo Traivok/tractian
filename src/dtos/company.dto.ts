@@ -1,5 +1,3 @@
-import { UserDto }      from './user.dto';
-import { UnitDto }      from './unit.dto';
 import { Identifiable } from './identifiable.dto';
 
 export interface CompanyDto extends Identifiable {
@@ -10,4 +8,6 @@ export interface CompanyDto extends Identifiable {
     // units: UnitDto[];
 }
 
-export type CreateCompanyDto = Omit<CompanyDto, 'users' | 'units' | '_id'>
+export type CreateCompanyDto = Omit<CompanyDto, 'users' | 'units' | '_id'>;
+
+export type UpdateCompanyDto = Partial<CreateCompanyDto>;

@@ -193,6 +193,76 @@
 			}
 		},
 		"/companies/{companyId}": {
+			"patch": {
+				"operationId": "createCompany",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CompanyDto"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"name": "Industria Freios Supremos",
+											"description": "Freios e ABS.",
+											"industry": "auto parts manufacturer"
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"companies"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "companyId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/Types.ObjectId"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateCompanyDto"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "deleteCompany",
+				"responses": {
+					"204": {
+						"description": "No Content"
+					}
+				},
+				"tags": [
+					"companies"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "companyId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/Types.ObjectId"
+						}
+					}
+				]
+			},
 			"get": {
 				"operationId": "getCompany",
 				"responses": {

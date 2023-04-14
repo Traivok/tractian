@@ -128,6 +128,57 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.patch('/companies/:companyId',
+            ...(fetchMiddlewares<RequestHandler>(CompanyController)),
+            ...(fetchMiddlewares<RequestHandler>(CompanyController.prototype.update)),
+
+            function CompanyController_update(request: any, response: any, next: any) {
+            const args = {
+                    companyId: {"in":"path","name":"companyId","required":true,"ref":"Types.ObjectId"},
+                    body: {"in":"body","name":"body","required":true,"ref":"CreateCompanyDto"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new CompanyController();
+
+
+              const promise = controller.update.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 201, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/companies/:companyId',
+            ...(fetchMiddlewares<RequestHandler>(CompanyController)),
+            ...(fetchMiddlewares<RequestHandler>(CompanyController.prototype.delete)),
+
+            function CompanyController_delete(request: any, response: any, next: any) {
+            const args = {
+                    companyId: {"in":"path","name":"companyId","required":true,"ref":"Types.ObjectId"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new CompanyController();
+
+
+              const promise = controller.delete.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 204, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/companies/:companyId',
             ...(fetchMiddlewares<RequestHandler>(CompanyController)),
             ...(fetchMiddlewares<RequestHandler>(CompanyController.prototype.get)),
