@@ -23,7 +23,7 @@ export class UnitController {
 
     @Post('/')
     @SuccessResponse(201, 'Created')
-    @OperationId('createEmployee')
+    @OperationId('createUnit')
     @Example<CreateUnitDto>({
         name:        'Unit 02',
         location:    'New Tokyo',

@@ -2,9 +2,9 @@ import { Document, FilterQuery, Model, Types, UpdateQuery } from 'mongoose';
 import { InvalidateEmpty, ValidateObjectIds }               from '../lib/validation.lib';
 import { Identifiable }                        from '../dtos/identifiable.dto';
 
-type Id = Types.ObjectId | string;
-type Params = Id | Record<string, Id>;
-type OmitMongo<T> = Omit<T, '_id' | '__v'>;
+export type Id = Types.ObjectId | string;
+export type Params = Id | Record<string, Id>;
+export type OmitMongo<T> = Omit<T, '_id' | '__v'>;
 
 export abstract class CrudService<DtoType extends Identifiable> {
 
@@ -35,7 +35,7 @@ export abstract class CrudService<DtoType extends Identifiable> {
     async update(params: Params, dto: UpdateQuery<DtoType>): Promise<OmitMongo<DtoType>> {
         const ids = this.formatId(params);
 
-        const maybeEntity = await this.model.findOneAndUpdate(ids, dto, { new: true });
+        const maybeEntity = await this.model.findOneAndUpdate(ids, dto, { new: true, runValidators: true });
         const entity      = InvalidateEmpty<Document<Types.ObjectId, unknown, DtoType>>(maybeEntity);
 
         return this.toDto(entity);

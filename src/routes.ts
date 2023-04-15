@@ -46,24 +46,24 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Pick_AssetDto.Exclude_keyofAssetDto.id-or-unitId-or-ownerId-or-needMaintenance__": {
+    "Pick_AssetDto.Exclude_keyofAssetDto.id-or-unitId-or-needMaintenance__": {
         "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"name":{"dataType":"string","required":true},"description":{"dataType":"string","required":true},"serialCode":{"dataType":"string","required":true},"manufacturer":{"dataType":"string","required":true},"purchaseDate":{"dataType":"datetime","required":true},"nextMaintenanceDate":{"dataType":"datetime"},"model":{"dataType":"string","required":true},"status":{"ref":"StatusType","required":true},"health":{"dataType":"double","required":true},"imageUrl":{"dataType":"string","required":true}},"validators":{}},
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"name":{"dataType":"string","required":true},"description":{"dataType":"string","required":true},"serialCode":{"dataType":"string","required":true},"manufacturer":{"dataType":"string","required":true},"purchaseDate":{"dataType":"datetime","required":true},"nextMaintenanceDate":{"dataType":"datetime"},"ownerId":{"ref":"Types.ObjectId","required":true},"model":{"dataType":"string","required":true},"status":{"ref":"StatusType","required":true},"health":{"dataType":"double","required":true},"imageUrl":{"dataType":"string","required":true}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Omit_AssetDto.id-or-unitId-or-ownerId-or-needMaintenance_": {
+    "Omit_AssetDto.id-or-unitId-or-needMaintenance_": {
         "dataType": "refAlias",
-        "type": {"ref":"Pick_AssetDto.Exclude_keyofAssetDto.id-or-unitId-or-ownerId-or-needMaintenance__","validators":{}},
+        "type": {"ref":"Pick_AssetDto.Exclude_keyofAssetDto.id-or-unitId-or-needMaintenance__","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "CreateAssetDto": {
         "dataType": "refAlias",
-        "type": {"ref":"Omit_AssetDto.id-or-unitId-or-ownerId-or-needMaintenance_","validators":{}},
+        "type": {"ref":"Omit_AssetDto.id-or-unitId-or-needMaintenance_","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Partial_CreateAssetDto_": {
         "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"name":{"dataType":"string"},"description":{"dataType":"string"},"serialCode":{"dataType":"string"},"manufacturer":{"dataType":"string"},"purchaseDate":{"dataType":"datetime"},"nextMaintenanceDate":{"dataType":"datetime"},"model":{"dataType":"string"},"status":{"ref":"StatusType"},"health":{"dataType":"double"},"imageUrl":{"dataType":"string"}},"validators":{}},
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"name":{"dataType":"string"},"description":{"dataType":"string"},"serialCode":{"dataType":"string"},"manufacturer":{"dataType":"string"},"purchaseDate":{"dataType":"datetime"},"nextMaintenanceDate":{"dataType":"datetime"},"ownerId":{"ref":"Types.ObjectId"},"model":{"dataType":"string"},"status":{"ref":"StatusType"},"health":{"dataType":"double"},"imageUrl":{"dataType":"string"}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "UpdateAssetDto": {
@@ -181,13 +181,15 @@ export function RegisterRoutes(app: Router) {
     //  NOTE: If you do not see routes for all of your controllers in this file, then you might not have informed tsoa of where to look
     //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
     // ###########################################################################################################
-        app.get('/assets?low_life',
+        app.get('/assets',
             ...(fetchMiddlewares<RequestHandler>(AssetController)),
-            ...(fetchMiddlewares<RequestHandler>(AssetController.prototype.listLowHealth)),
+            ...(fetchMiddlewares<RequestHandler>(AssetController.prototype.listAssets)),
 
-            function AssetController_listLowHealth(request: any, response: any, next: any) {
+            function AssetController_listAssets(request: any, response: any, next: any) {
             const args = {
-                    lowHealthThreshold: {"in":"query","name":"lowHealthThreshold","required":true,"dataType":"double"},
+                    healthLowerThan: {"in":"query","name":"healthLowerThan","dataType":"double"},
+                    status: {"in":"query","name":"status","ref":"StatusType"},
+                    needMaintenance: {"in":"query","name":"needMaintenance","dataType":"boolean"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -199,31 +201,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new AssetController();
 
 
-              const promise = controller.listLowHealth.apply(controller, validatedArgs as any);
-              promiseHandler(controller, promise, response, 200, next);
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/assets?needing_maintenance',
-            ...(fetchMiddlewares<RequestHandler>(AssetController)),
-            ...(fetchMiddlewares<RequestHandler>(AssetController.prototype.listNeedingMaintenance)),
-
-            function AssetController_listNeedingMaintenance(request: any, response: any, next: any) {
-            const args = {
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request, response);
-
-                const controller = new AssetController();
-
-
-              const promise = controller.listNeedingMaintenance.apply(controller, validatedArgs as any);
+              const promise = controller.listAssets.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, 200, next);
             } catch (err) {
                 return next(err);
@@ -232,12 +210,14 @@ export function RegisterRoutes(app: Router) {
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/units/:unitId/assets',
             ...(fetchMiddlewares<RequestHandler>(AssetController)),
-            ...(fetchMiddlewares<RequestHandler>(AssetController.prototype.list)),
+            ...(fetchMiddlewares<RequestHandler>(AssetController.prototype.listByUnit)),
 
-            function AssetController_list(request: any, response: any, next: any) {
+            function AssetController_listByUnit(request: any, response: any, next: any) {
             const args = {
                     unitId: {"in":"path","name":"unitId","required":true,"ref":"Types.ObjectId"},
+                    healthLowerThan: {"in":"query","name":"healthLowerThan","dataType":"double"},
                     status: {"in":"query","name":"status","ref":"StatusType"},
+                    needMaintenance: {"in":"query","name":"needMaintenance","dataType":"boolean"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -249,7 +229,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new AssetController();
 
 
-              const promise = controller.list.apply(controller, validatedArgs as any);
+              const promise = controller.listByUnit.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, 200, next);
             } catch (err) {
                 return next(err);

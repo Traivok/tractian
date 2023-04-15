@@ -18,6 +18,6 @@ export interface AssetDto extends Identifiable {
     imageUrl: string;
 }
 
-export type CreateAssetDto = Omit<AssetDto, 'id' | 'unitId' | 'ownerId' | 'needMaintenance'>;
+export type CreateAssetDto = Omit<AssetDto, 'id' | 'unitId' | 'needMaintenance'>;
 
 export type UpdateAssetDto = Partial<CreateAssetDto>;

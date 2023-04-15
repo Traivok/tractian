@@ -1,22 +1,26 @@
-import { CrudService }       from './crud.service';
-import { AssetDto }          from '../dtos/asset.dto';
-import Asset, { StatusType } from '../repositories/asset.repo';
+import { CrudService, OmitMongo }                from './crud.service';
+import { AssetDto }                              from '../dtos/asset.dto';
+import Asset                                     from '../repositories/asset.repo';
+import { AssetQueryBuilder, AssetVirtualFilter } from '../lib/asset-query.builder';
+
 
 class AssetService extends CrudService<AssetDto> {
     constructor() {
         super(Asset);
     }
 
-    /**
-     * @param lowHealthThreshold selects all assets with health less than or equal to this arg
-     */
-    async findByLowHealth(lowHealthThreshold: number): Promise<AssetDto[]> {
-        return this.findAll({ health: { $lte: lowHealthThreshold } });
+    public async findBy(query: AssetVirtualFilter): Promise<OmitMongo<AssetDto>[]> {
+        const filter = new AssetQueryBuilder()
+            .healthLowerThan(query.healthLowerThan)
+            .needMaintenance(query.needMaintenance)
+            .status(query.status)
+            .unitId(query.unitId)
+            .Build();
+
+        return this.findAll(filter);
     }
 
-    async findByStatus(status: StatusType): Promise<AssetDto[]> {
-        return this.findAll({ status });
-    }
+
 }
 
 export default new AssetService();

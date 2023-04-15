@@ -83,7 +83,7 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"Pick_AssetDto.Exclude_keyofAssetDto.id-or-unitId-or-ownerId-or-needMaintenance__": {
+			"Pick_AssetDto.Exclude_keyofAssetDto.id-or-unitId-or-needMaintenance__": {
 				"properties": {
 					"name": {
 						"type": "string"
@@ -105,6 +105,9 @@
 						"type": "string",
 						"format": "date-time"
 					},
+					"ownerId": {
+						"$ref": "#/components/schemas/Types.ObjectId"
+					},
 					"model": {
 						"type": "string"
 					},
@@ -125,6 +128,7 @@
 					"serialCode",
 					"manufacturer",
 					"purchaseDate",
+					"ownerId",
 					"model",
 					"status",
 					"health",
@@ -133,12 +137,12 @@
 				"type": "object",
 				"description": "From T, pick a set of properties whose keys are in the union K"
 			},
-			"Omit_AssetDto.id-or-unitId-or-ownerId-or-needMaintenance_": {
-				"$ref": "#/components/schemas/Pick_AssetDto.Exclude_keyofAssetDto.id-or-unitId-or-ownerId-or-needMaintenance__",
+			"Omit_AssetDto.id-or-unitId-or-needMaintenance_": {
+				"$ref": "#/components/schemas/Pick_AssetDto.Exclude_keyofAssetDto.id-or-unitId-or-needMaintenance__",
 				"description": "Construct a type with the properties of T except for those in type K."
 			},
 			"CreateAssetDto": {
-				"$ref": "#/components/schemas/Omit_AssetDto.id-or-unitId-or-ownerId-or-needMaintenance_"
+				"$ref": "#/components/schemas/Omit_AssetDto.id-or-unitId-or-needMaintenance_"
 			},
 			"Partial_CreateAssetDto_": {
 				"properties": {
@@ -161,6 +165,9 @@
 					"nextMaintenanceDate": {
 						"type": "string",
 						"format": "date-time"
+					},
+					"ownerId": {
+						"$ref": "#/components/schemas/Types.ObjectId"
 					},
 					"model": {
 						"type": "string"
@@ -395,9 +402,9 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
-		"/assets?low_life": {
+		"/assets": {
 			"get": {
-				"operationId": "lisLowHealthAssets",
+				"operationId": "listAssets",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -420,44 +427,35 @@
 				"parameters": [
 					{
 						"in": "query",
-						"name": "lowHealthThreshold",
-						"required": true,
+						"name": "healthLowerThan",
+						"required": false,
 						"schema": {
 							"format": "double",
 							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "status",
+						"required": false,
+						"schema": {
+							"$ref": "#/components/schemas/StatusType"
+						}
+					},
+					{
+						"in": "query",
+						"name": "needMaintenance",
+						"required": false,
+						"schema": {
+							"type": "boolean"
 						}
 					}
 				]
 			}
 		},
-		"/assets?needing_maintenance": {
-			"get": {
-				"operationId": "lisLowHealthAssets",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/AssetDto"
-									},
-									"type": "array"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"assets"
-				],
-				"security": [],
-				"parameters": []
-			}
-		},
 		"/units/{unitId}/assets": {
 			"get": {
-				"operationId": "listAssets",
+				"operationId": "listAssetsByUnit",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -488,10 +486,27 @@
 					},
 					{
 						"in": "query",
+						"name": "healthLowerThan",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
 						"name": "status",
 						"required": false,
 						"schema": {
 							"$ref": "#/components/schemas/StatusType"
+						}
+					},
+					{
+						"in": "query",
+						"name": "needMaintenance",
+						"required": false,
+						"schema": {
+							"type": "boolean"
 						}
 					}
 				]
@@ -515,7 +530,7 @@
 											"imageUrl": "https://upload.wikimedia.org/wikipedia/commons/c/cb/Digital_Barometer_Sensor.jpg",
 											"manufacturer": "Sensors SA",
 											"model": "sensor x",
-											"purchaseDate": "2023-04-15T01:13:40.879Z",
+											"purchaseDate": "2023-04-15T14:10:13.191Z",
 											"serialCode": "abc-123",
 											"status": "Running"
 										}
@@ -1079,7 +1094,7 @@
 				]
 			},
 			"post": {
-				"operationId": "createEmployee",
+				"operationId": "createUnit",
 				"responses": {
 					"201": {
 						"description": "Created",

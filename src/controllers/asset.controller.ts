@@ -6,7 +6,9 @@ import {
     Types,
 }                                                                                                          from 'mongoose';
 import {
-    AssetDto, CreateAssetDto, UpdateAssetDto,
+    AssetDto,
+    CreateAssetDto,
+    UpdateAssetDto,
 }                                                                                                          from '../dtos/asset.dto';
 import assetService
                                                                                                            from '../services/asset.service';
@@ -17,29 +19,25 @@ import {
 @Route()
 @Tags('assets')
 export class AssetController {
-    @Get('/assets?low_life')
-    @SuccessResponse(200, 'Ok')
-    @OperationId('lisLowHealthAssets')
-    public async listLowHealth(@Query() lowHealthThreshold: number): Promise<AssetDto[]> {
-        return assetService.findByLowHealth(lowHealthThreshold);
-    }
 
-    @Get('/assets?needing_maintenance')
+    @Get('/assets')
     @SuccessResponse(200, 'Ok')
-    @OperationId('lisLowHealthAssets')
-    public async listNeedingMaintenance(): Promise<AssetDto[]> {
-        return assetService.findAll({ needMaintenance: true });
+    @OperationId('listAssets')
+    public async listAssets(@Query() healthLowerThan?: number,
+                               @Query() status?: StatusType,
+                               @Query() needMaintenance?: boolean): Promise<AssetDto[]> {
+        return assetService.findBy({ needMaintenance, status, healthLowerThan });
     }
 
     @Get('/units/{unitId}/assets')
     @SuccessResponse(200, 'Ok')
-    @OperationId('listAssets')
-    public async list(@Path('unitId') unitId: Types.ObjectId,
-                      @Query() status?: StatusType): Promise<AssetDto[]> {
-        if (status === undefined)
-            return assetService.findAll({ unitId });
-        else
-            return assetService.findAll({ status, unitId });
+    @OperationId('listAssetsByUnit')
+    public async listByUnit(@Path('unitId') unitId: Types.ObjectId,
+                            @Query() healthLowerThan?: number,
+                            @Query() status?: StatusType,
+                            @Query() needMaintenance?: boolean): Promise<AssetDto[]> {
+
+        return assetService.findBy({ needMaintenance, status, healthLowerThan, unitId });
     }
 
     @Post('/units/{unitId}/assets')
@@ -55,6 +53,7 @@ export class AssetController {
         purchaseDate: new Date(),
         serialCode:   'abc-123',
         status:       'Running',
+        ownerId:      new Types.ObjectId(1),
 
     })
     public async create(@Path('unitId') unitId: Types.ObjectId,
