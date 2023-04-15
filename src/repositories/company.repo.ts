@@ -14,15 +14,7 @@ const CompanySchema = new Schema<CompanyDto>({
     },
     industry:    {
         type: String,
-    },
-    users:       [ {
-        type: Types.ObjectId,
-        ref:  'User',
-    } ],
-    units:       [ {
-        type: Types.ObjectId,
-        ref:  'Unit',
-    } ],
+    }
 });
 
 CompanySchema.post('findOneAndDelete', async function (doc) {

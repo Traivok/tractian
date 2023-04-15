@@ -3,9 +3,13 @@
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { Controller, ValidationService, FieldErrors, ValidateError, TsoaRoute, HttpStatusCodeLiteral, TsoaResponse, fetchMiddlewares } from '@tsoa/runtime';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { AssetController } from './controllers/asset.controller';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { CompanyController } from './controllers/company.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { EmployeeController } from './controllers/employee.controller';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { UnitController } from './controllers/unit.controller';
 import type { RequestHandler, Router } from 'express';
 
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -16,16 +20,64 @@ const models: TsoaRoute.Models = {
         "type": {"dataType":"string","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "StatusType": {
+        "dataType": "refAlias",
+        "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["Running"]},{"dataType":"enum","enums":["Alerting"]},{"dataType":"enum","enums":["Stopped"]}],"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "AssetDto": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"string","required":true},
+            "name": {"dataType":"string","required":true},
+            "description": {"dataType":"string","required":true},
+            "serialCode": {"dataType":"string","required":true},
+            "manufacturer": {"dataType":"string","required":true},
+            "purchaseDate": {"dataType":"datetime","required":true},
+            "nextMaintenanceDate": {"dataType":"datetime"},
+            "needMaintenance": {"dataType":"boolean","required":true},
+            "unitId": {"ref":"Types.ObjectId","required":true},
+            "ownerId": {"ref":"Types.ObjectId","required":true},
+            "model": {"dataType":"string","required":true},
+            "status": {"ref":"StatusType","required":true},
+            "health": {"dataType":"double","required":true},
+            "imageUrl": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Pick_AssetDto.Exclude_keyofAssetDto.id-or-unitId-or-ownerId-or-needMaintenance__": {
+        "dataType": "refAlias",
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"name":{"dataType":"string","required":true},"description":{"dataType":"string","required":true},"serialCode":{"dataType":"string","required":true},"manufacturer":{"dataType":"string","required":true},"purchaseDate":{"dataType":"datetime","required":true},"nextMaintenanceDate":{"dataType":"datetime"},"model":{"dataType":"string","required":true},"status":{"ref":"StatusType","required":true},"health":{"dataType":"double","required":true},"imageUrl":{"dataType":"string","required":true}},"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Omit_AssetDto.id-or-unitId-or-ownerId-or-needMaintenance_": {
+        "dataType": "refAlias",
+        "type": {"ref":"Pick_AssetDto.Exclude_keyofAssetDto.id-or-unitId-or-ownerId-or-needMaintenance__","validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CreateAssetDto": {
+        "dataType": "refAlias",
+        "type": {"ref":"Omit_AssetDto.id-or-unitId-or-ownerId-or-needMaintenance_","validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Partial_CreateAssetDto_": {
+        "dataType": "refAlias",
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"name":{"dataType":"string"},"description":{"dataType":"string"},"serialCode":{"dataType":"string"},"manufacturer":{"dataType":"string"},"purchaseDate":{"dataType":"datetime"},"nextMaintenanceDate":{"dataType":"datetime"},"model":{"dataType":"string"},"status":{"ref":"StatusType"},"health":{"dataType":"double"},"imageUrl":{"dataType":"string"}},"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "UpdateAssetDto": {
+        "dataType": "refAlias",
+        "type": {"ref":"Partial_CreateAssetDto_","validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "CompanyDto": {
         "dataType": "refObject",
         "properties": {
             "id": {"dataType":"string","required":true},
-            "_id": {"ref":"Types.ObjectId","required":true},
             "name": {"dataType":"string","required":true},
             "description": {"dataType":"string"},
             "industry": {"dataType":"string"},
-            "users": {"dataType":"array","array":{"dataType":"refAlias","ref":"Types.ObjectId"},"required":true},
-            "units": {"dataType":"array","array":{"dataType":"refAlias","ref":"Types.ObjectId"},"required":true},
         },
         "additionalProperties": false,
     },
@@ -45,6 +97,16 @@ const models: TsoaRoute.Models = {
         "type": {"ref":"Omit_CompanyDto.users-or-units-or-_id-or-id_","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Partial_CreateCompanyDto_": {
+        "dataType": "refAlias",
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"name":{"dataType":"string"},"description":{"dataType":"string"},"industry":{"dataType":"string"}},"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "UpdateCompanyDto": {
+        "dataType": "refAlias",
+        "type": {"ref":"Partial_CreateCompanyDto_","validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "RoleType": {
         "dataType": "refAlias",
         "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["admin"]},{"dataType":"enum","enums":["technician"]}],"validators":{}},
@@ -54,7 +116,6 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "id": {"dataType":"string","required":true},
-            "_id": {"ref":"Types.ObjectId","required":true},
             "name": {"dataType":"string","required":true},
             "email": {"dataType":"string","required":true},
             "companyId": {"ref":"Types.ObjectId","required":true},
@@ -78,6 +139,38 @@ const models: TsoaRoute.Models = {
         "type": {"ref":"Partial_CreateUserDto_","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "UnitDto": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"string","required":true},
+            "companyId": {"ref":"Types.ObjectId","required":true},
+            "name": {"dataType":"string","required":true},
+            "description": {"dataType":"string"},
+            "location": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CreateUnitDto": {
+        "dataType": "refObject",
+        "properties": {
+            "name": {"dataType":"string","required":true},
+            "description": {"dataType":"string"},
+            "location": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Partial_CreateUnitDto_": {
+        "dataType": "refAlias",
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"name":{"dataType":"string"},"description":{"dataType":"string"},"location":{"dataType":"string"}},"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "UpdateUnitDto": {
+        "dataType": "refAlias",
+        "type": {"ref":"Partial_CreateUnitDto_","validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };
 const validationService = new ValidationService(models);
 
@@ -88,6 +181,186 @@ export function RegisterRoutes(app: Router) {
     //  NOTE: If you do not see routes for all of your controllers in this file, then you might not have informed tsoa of where to look
     //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
     // ###########################################################################################################
+        app.get('/assets?low_life',
+            ...(fetchMiddlewares<RequestHandler>(AssetController)),
+            ...(fetchMiddlewares<RequestHandler>(AssetController.prototype.listLowHealth)),
+
+            function AssetController_listLowHealth(request: any, response: any, next: any) {
+            const args = {
+                    lowHealthThreshold: {"in":"query","name":"lowHealthThreshold","required":true,"dataType":"double"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new AssetController();
+
+
+              const promise = controller.listLowHealth.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/assets?needing_maintenance',
+            ...(fetchMiddlewares<RequestHandler>(AssetController)),
+            ...(fetchMiddlewares<RequestHandler>(AssetController.prototype.listNeedingMaintenance)),
+
+            function AssetController_listNeedingMaintenance(request: any, response: any, next: any) {
+            const args = {
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new AssetController();
+
+
+              const promise = controller.listNeedingMaintenance.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/units/:unitId/assets',
+            ...(fetchMiddlewares<RequestHandler>(AssetController)),
+            ...(fetchMiddlewares<RequestHandler>(AssetController.prototype.list)),
+
+            function AssetController_list(request: any, response: any, next: any) {
+            const args = {
+                    unitId: {"in":"path","name":"unitId","required":true,"ref":"Types.ObjectId"},
+                    status: {"in":"query","name":"status","ref":"StatusType"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new AssetController();
+
+
+              const promise = controller.list.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/units/:unitId/assets',
+            ...(fetchMiddlewares<RequestHandler>(AssetController)),
+            ...(fetchMiddlewares<RequestHandler>(AssetController.prototype.create)),
+
+            function AssetController_create(request: any, response: any, next: any) {
+            const args = {
+                    unitId: {"in":"path","name":"unitId","required":true,"ref":"Types.ObjectId"},
+                    body: {"in":"body","name":"body","required":true,"ref":"CreateAssetDto"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new AssetController();
+
+
+              const promise = controller.create.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 201, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/units/:unitId/assets/:assetId',
+            ...(fetchMiddlewares<RequestHandler>(AssetController)),
+            ...(fetchMiddlewares<RequestHandler>(AssetController.prototype.getAsset)),
+
+            function AssetController_getAsset(request: any, response: any, next: any) {
+            const args = {
+                    unitId: {"in":"path","name":"unitId","required":true,"ref":"Types.ObjectId"},
+                    assetId: {"in":"path","name":"assetId","required":true,"ref":"Types.ObjectId"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new AssetController();
+
+
+              const promise = controller.getAsset.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.patch('/units/:unitId/assets/:assetId',
+            ...(fetchMiddlewares<RequestHandler>(AssetController)),
+            ...(fetchMiddlewares<RequestHandler>(AssetController.prototype.update)),
+
+            function AssetController_update(request: any, response: any, next: any) {
+            const args = {
+                    unitId: {"in":"path","name":"unitId","required":true,"ref":"Types.ObjectId"},
+                    assetId: {"in":"path","name":"assetId","required":true,"ref":"Types.ObjectId"},
+                    body: {"in":"body","name":"body","required":true,"ref":"UpdateAssetDto"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new AssetController();
+
+
+              const promise = controller.update.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/units/:unitId/assets/:assetId',
+            ...(fetchMiddlewares<RequestHandler>(AssetController)),
+            ...(fetchMiddlewares<RequestHandler>(AssetController.prototype.delete)),
+
+            function AssetController_delete(request: any, response: any, next: any) {
+            const args = {
+                    unitId: {"in":"path","name":"unitId","required":true,"ref":"Types.ObjectId"},
+                    assetId: {"in":"path","name":"assetId","required":true,"ref":"Types.ObjectId"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new AssetController();
+
+
+              const promise = controller.delete.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 204, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/companies',
             ...(fetchMiddlewares<RequestHandler>(CompanyController)),
             ...(fetchMiddlewares<RequestHandler>(CompanyController.prototype.list)),
@@ -145,7 +418,7 @@ export function RegisterRoutes(app: Router) {
             function CompanyController_update(request: any, response: any, next: any) {
             const args = {
                     companyId: {"in":"path","name":"companyId","required":true,"ref":"Types.ObjectId"},
-                    body: {"in":"body","name":"body","required":true,"ref":"CreateCompanyDto"},
+                    body: {"in":"body","name":"body","required":true,"ref":"UpdateCompanyDto"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -335,6 +608,136 @@ export function RegisterRoutes(app: Router) {
                 validatedArgs = getValidatedArgs(args, request, response);
 
                 const controller = new EmployeeController();
+
+
+              const promise = controller.delete.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 204, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/companies/:companyId/units',
+            ...(fetchMiddlewares<RequestHandler>(UnitController)),
+            ...(fetchMiddlewares<RequestHandler>(UnitController.prototype.list)),
+
+            function UnitController_list(request: any, response: any, next: any) {
+            const args = {
+                    companyId: {"in":"path","name":"companyId","required":true,"ref":"Types.ObjectId"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new UnitController();
+
+
+              const promise = controller.list.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/companies/:companyId/units',
+            ...(fetchMiddlewares<RequestHandler>(UnitController)),
+            ...(fetchMiddlewares<RequestHandler>(UnitController.prototype.create)),
+
+            function UnitController_create(request: any, response: any, next: any) {
+            const args = {
+                    companyId: {"in":"path","name":"companyId","required":true,"ref":"Types.ObjectId"},
+                    body: {"in":"body","name":"body","required":true,"ref":"CreateUnitDto"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new UnitController();
+
+
+              const promise = controller.create.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 201, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/companies/:companyId/units/:unitId',
+            ...(fetchMiddlewares<RequestHandler>(UnitController)),
+            ...(fetchMiddlewares<RequestHandler>(UnitController.prototype.getUnit)),
+
+            function UnitController_getUnit(request: any, response: any, next: any) {
+            const args = {
+                    companyId: {"in":"path","name":"companyId","required":true,"ref":"Types.ObjectId"},
+                    unitId: {"in":"path","name":"unitId","required":true,"ref":"Types.ObjectId"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new UnitController();
+
+
+              const promise = controller.getUnit.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.patch('/companies/:companyId/units/:unitId',
+            ...(fetchMiddlewares<RequestHandler>(UnitController)),
+            ...(fetchMiddlewares<RequestHandler>(UnitController.prototype.update)),
+
+            function UnitController_update(request: any, response: any, next: any) {
+            const args = {
+                    companyId: {"in":"path","name":"companyId","required":true,"ref":"Types.ObjectId"},
+                    unitId: {"in":"path","name":"unitId","required":true,"ref":"Types.ObjectId"},
+                    body: {"in":"body","name":"body","required":true,"ref":"UpdateUnitDto"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new UnitController();
+
+
+              const promise = controller.update.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/companies/:companyId/units/:unitId',
+            ...(fetchMiddlewares<RequestHandler>(UnitController)),
+            ...(fetchMiddlewares<RequestHandler>(UnitController.prototype.delete)),
+
+            function UnitController_delete(request: any, response: any, next: any) {
+            const args = {
+                    companyId: {"in":"path","name":"companyId","required":true,"ref":"Types.ObjectId"},
+                    unitId: {"in":"path","name":"unitId","required":true,"ref":"Types.ObjectId"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new UnitController();
 
 
               const promise = controller.delete.apply(controller, validatedArgs as any);

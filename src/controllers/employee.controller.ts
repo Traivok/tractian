@@ -11,12 +11,6 @@ import {
     ValidateObjectIds,
 }                                                                                                   from '../lib/validation.lib';
 import { Types }                                                                                    from 'mongoose';
-import {
-    NotFoundError,
-}                                                                                                   from '../middlewares/not-found.middleware';
-import {
-    CreateCompanyDto,
-}                                                                                                   from '../dtos/company.dto';
 
 @Route('companies/{companyId}/employees')
 @Tags('employees')
@@ -38,6 +32,7 @@ export class EmployeeController {
     })
     public async create(@Path('companyId') companyId: Types.ObjectId,
                         @Body() body: CreateUserDto): Promise<UserDto> {
+        ValidateObjectIds({ companyId });
         return await userService.create({ companyId, ...body });
     }
 
@@ -55,16 +50,14 @@ export class EmployeeController {
     public async update(@Path('companyId') companyId: Types.ObjectId,
                         @Path('userId') userId: Types.ObjectId,
                         @Body() body: UpdateUserDto): Promise<UserDto> {
-        ValidateObjectIds({ userId, companyId });
-        return InvalidateEmpty(await userService.update({ _id: userId, companyId }, body));
+        return await userService.update({ _id: userId, companyId }, body);
     }
 
     @Delete('/{userId}')
     @SuccessResponse(204, 'No Content')
-    @OperationId('deleteUser')
+    @OperationId('deleteEmployee')
     public async delete(@Path() companyId: Types.ObjectId, @Path('userId') userId: Types.ObjectId): Promise<void> {
-        ValidateObjectIds({ userId, companyId });
-        InvalidateEmpty(await userService.delete({ _id: userId, companyId }));
+        await userService.delete({ _id: userId, companyId });
     }
 }
 

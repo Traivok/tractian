@@ -1,11 +1,12 @@
 import { MongooseClient as client } from '../mongodb.connection';
 import { Schema }                   from 'mongoose';
 import mongooseLeanVirtuals         from 'mongoose-lean-virtuals';
+import { AssetDto }                 from '../dtos/asset.dto';
 
 export const StatusValues = [ 'Running', 'Alerting', 'Stopped' ] as const;
 export type StatusType = ( typeof StatusValues )[number]; // getsthe type union of the possible values above
 
-const AssetSchema = new Schema({
+const AssetSchema = new Schema<AssetDto>({
     name:                {
         type:     String,
         required: true,
@@ -33,11 +34,13 @@ const AssetSchema = new Schema({
         type:     Schema.Types.ObjectId,
         ref:      'Unit',
         required: true,
+        index:    true,
     },
     ownerId:             {
         type:     Schema.Types.ObjectId,
         ref:      'User',
         required: true,
+        index:    true,
     },
     model:               {
         type:     String,

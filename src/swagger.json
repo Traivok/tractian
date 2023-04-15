@@ -9,13 +9,183 @@
 			"Types.ObjectId": {
 				"type": "string"
 			},
-			"CompanyDto": {
+			"StatusType": {
+				"type": "string",
+				"enum": [
+					"Running",
+					"Alerting",
+					"Stopped"
+				]
+			},
+			"AssetDto": {
 				"properties": {
 					"id": {
 						"type": "string"
 					},
-					"_id": {
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"serialCode": {
+						"type": "string"
+					},
+					"manufacturer": {
+						"type": "string"
+					},
+					"purchaseDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"nextMaintenanceDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"needMaintenance": {
+						"type": "boolean"
+					},
+					"unitId": {
 						"$ref": "#/components/schemas/Types.ObjectId"
+					},
+					"ownerId": {
+						"$ref": "#/components/schemas/Types.ObjectId"
+					},
+					"model": {
+						"type": "string"
+					},
+					"status": {
+						"$ref": "#/components/schemas/StatusType"
+					},
+					"health": {
+						"type": "number",
+						"format": "double"
+					},
+					"imageUrl": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"description",
+					"serialCode",
+					"manufacturer",
+					"purchaseDate",
+					"needMaintenance",
+					"unitId",
+					"ownerId",
+					"model",
+					"status",
+					"health",
+					"imageUrl"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_AssetDto.Exclude_keyofAssetDto.id-or-unitId-or-ownerId-or-needMaintenance__": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"serialCode": {
+						"type": "string"
+					},
+					"manufacturer": {
+						"type": "string"
+					},
+					"purchaseDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"nextMaintenanceDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"model": {
+						"type": "string"
+					},
+					"status": {
+						"$ref": "#/components/schemas/StatusType"
+					},
+					"health": {
+						"type": "number",
+						"format": "double"
+					},
+					"imageUrl": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"description",
+					"serialCode",
+					"manufacturer",
+					"purchaseDate",
+					"model",
+					"status",
+					"health",
+					"imageUrl"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_AssetDto.id-or-unitId-or-ownerId-or-needMaintenance_": {
+				"$ref": "#/components/schemas/Pick_AssetDto.Exclude_keyofAssetDto.id-or-unitId-or-ownerId-or-needMaintenance__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"CreateAssetDto": {
+				"$ref": "#/components/schemas/Omit_AssetDto.id-or-unitId-or-ownerId-or-needMaintenance_"
+			},
+			"Partial_CreateAssetDto_": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"serialCode": {
+						"type": "string"
+					},
+					"manufacturer": {
+						"type": "string"
+					},
+					"purchaseDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"nextMaintenanceDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"model": {
+						"type": "string"
+					},
+					"status": {
+						"$ref": "#/components/schemas/StatusType"
+					},
+					"health": {
+						"type": "number",
+						"format": "double"
+					},
+					"imageUrl": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"description": "Make all properties in T optional"
+			},
+			"UpdateAssetDto": {
+				"$ref": "#/components/schemas/Partial_CreateAssetDto_"
+			},
+			"CompanyDto": {
+				"properties": {
+					"id": {
+						"type": "string"
 					},
 					"name": {
 						"type": "string"
@@ -25,26 +195,11 @@
 					},
 					"industry": {
 						"type": "string"
-					},
-					"users": {
-						"items": {
-							"$ref": "#/components/schemas/Types.ObjectId"
-						},
-						"type": "array"
-					},
-					"units": {
-						"items": {
-							"$ref": "#/components/schemas/Types.ObjectId"
-						},
-						"type": "array"
 					}
 				},
 				"required": [
 					"id",
-					"_id",
-					"name",
-					"users",
-					"units"
+					"name"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -74,6 +229,24 @@
 			"CreateCompanyDto": {
 				"$ref": "#/components/schemas/Omit_CompanyDto.users-or-units-or-_id-or-id_"
 			},
+			"Partial_CreateCompanyDto_": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"industry": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"description": "Make all properties in T optional"
+			},
+			"UpdateCompanyDto": {
+				"$ref": "#/components/schemas/Partial_CreateCompanyDto_"
+			},
 			"RoleType": {
 				"type": "string",
 				"enum": [
@@ -85,9 +258,6 @@
 				"properties": {
 					"id": {
 						"type": "string"
-					},
-					"_id": {
-						"$ref": "#/components/schemas/Types.ObjectId"
 					},
 					"name": {
 						"type": "string"
@@ -104,7 +274,6 @@
 				},
 				"required": [
 					"id",
-					"_id",
 					"name",
 					"email",
 					"companyId",
@@ -148,6 +317,70 @@
 			},
 			"UpdateUserDto": {
 				"$ref": "#/components/schemas/Partial_CreateUserDto_"
+			},
+			"UnitDto": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"companyId": {
+						"$ref": "#/components/schemas/Types.ObjectId"
+					},
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"location": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"companyId",
+					"name",
+					"location"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CreateUnitDto": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"location": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"location"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Partial_CreateUnitDto_": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"location": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"description": "Make all properties in T optional"
+			},
+			"UpdateUnitDto": {
+				"$ref": "#/components/schemas/Partial_CreateUnitDto_"
 			}
 		},
 		"securitySchemes": {}
@@ -162,6 +395,278 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
+		"/assets?low_life": {
+			"get": {
+				"operationId": "lisLowHealthAssets",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/AssetDto"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"assets"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "lowHealthThreshold",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/assets?needing_maintenance": {
+			"get": {
+				"operationId": "lisLowHealthAssets",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/AssetDto"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"assets"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/units/{unitId}/assets": {
+			"get": {
+				"operationId": "listAssets",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/AssetDto"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"assets"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "unitId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/Types.ObjectId"
+						}
+					},
+					{
+						"in": "query",
+						"name": "status",
+						"required": false,
+						"schema": {
+							"$ref": "#/components/schemas/StatusType"
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "createEmployee",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AssetDto"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"name": "Pressure Sensor",
+											"description": "Miniature Barometer",
+											"health": 72,
+											"imageUrl": "https://upload.wikimedia.org/wikipedia/commons/c/cb/Digital_Barometer_Sensor.jpg",
+											"manufacturer": "Sensors SA",
+											"model": "sensor x",
+											"purchaseDate": "2023-04-15T01:13:40.879Z",
+											"serialCode": "abc-123",
+											"status": "Running"
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"assets"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "unitId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/Types.ObjectId"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateAssetDto"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/units/{unitId}/assets/{assetId}": {
+			"get": {
+				"operationId": "getAsset",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AssetDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"assets"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "unitId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/Types.ObjectId"
+						}
+					},
+					{
+						"in": "path",
+						"name": "assetId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/Types.ObjectId"
+						}
+					}
+				]
+			},
+			"patch": {
+				"operationId": "updateAsset",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AssetDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"assets"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "unitId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/Types.ObjectId"
+						}
+					},
+					{
+						"in": "path",
+						"name": "assetId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/Types.ObjectId"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateAssetDto"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "deleteAsset",
+				"responses": {
+					"204": {
+						"description": "No Content"
+					}
+				},
+				"tags": [
+					"assets"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "unitId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/Types.ObjectId"
+						}
+					},
+					{
+						"in": "path",
+						"name": "assetId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/Types.ObjectId"
+						}
+					}
+				]
+			}
+		},
 		"/companies": {
 			"get": {
 				"operationId": "listCompanies",
@@ -278,7 +783,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/CreateCompanyDto"
+								"$ref": "#/components/schemas/UpdateCompanyDto"
 							}
 						}
 					}
@@ -510,7 +1015,7 @@
 				}
 			},
 			"delete": {
-				"operationId": "deleteUser",
+				"operationId": "deleteEmployee",
 				"responses": {
 					"204": {
 						"description": "No Content"
@@ -532,6 +1037,204 @@
 					{
 						"in": "path",
 						"name": "userId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/Types.ObjectId"
+						}
+					}
+				]
+			}
+		},
+		"/companies/{companyId}/units": {
+			"get": {
+				"operationId": "listUnits",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/UnitDto"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"units"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "companyId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/Types.ObjectId"
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "createEmployee",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UnitDto"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"name": "Unit 02",
+											"location": "New Tokyo",
+											"description": "Advanced Technology"
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"units"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "companyId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/Types.ObjectId"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateUnitDto"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/companies/{companyId}/units/{unitId}": {
+			"get": {
+				"operationId": "getUnit",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UnitDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"units"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "companyId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/Types.ObjectId"
+						}
+					},
+					{
+						"in": "path",
+						"name": "unitId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/Types.ObjectId"
+						}
+					}
+				]
+			},
+			"patch": {
+				"operationId": "updateUnit",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UnitDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"units"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "companyId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/Types.ObjectId"
+						}
+					},
+					{
+						"in": "path",
+						"name": "unitId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/Types.ObjectId"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateUnitDto"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "deleteUnit",
+				"responses": {
+					"204": {
+						"description": "No Content"
+					}
+				},
+				"tags": [
+					"units"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "companyId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/Types.ObjectId"
+						}
+					},
+					{
+						"in": "path",
+						"name": "unitId",
 						"required": true,
 						"schema": {
 							"$ref": "#/components/schemas/Types.ObjectId"
