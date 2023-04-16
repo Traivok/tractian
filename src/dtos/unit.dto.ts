@@ -15,7 +15,7 @@ export interface UnitItemDto extends UnitDto {
 }
 
 
-export interface UnitDetail extends  UnitDto {
+export interface UnitDetailDto extends  UnitDto {
     assets: AssetDto
 }
 

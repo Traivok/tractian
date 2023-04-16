@@ -1,8 +1,9 @@
-import { CrudService, OmitMongo }             from './crud.service';
-import Unit                                   from '../repositories/unit.repo';
-import { UnitDto, UnitItemDto }               from '../dtos/unit.dto';
-import { Types }                              from 'mongoose';
-import { InvalidateEmpty, ValidateObjectIds } from '../lib/validation.lib';
+import { CrudService, OmitMongo }              from './crud.service';
+import Unit                                    from '../repositories/unit.repo';
+import { UnitDetailDto, UnitDto, UnitItemDto } from '../dtos/unit.dto';
+import { Types }                               from 'mongoose';
+import { InvalidateEmpty, ValidateObjectIds }  from '../lib/validation.lib';
+
 
 class UnitService extends CrudService<UnitDto> {
     constructor() {
@@ -25,8 +26,21 @@ class UnitService extends CrudService<UnitDto> {
             .match({ companyId: new Types.ObjectId(companyId) });
     }
 
-    public async findDetailed(companyId: Types.ObjectId, unitId: Types.ObjectId): Promise<OmitMongo<UnitDto>> {
+    public async findDetailed(companyId: Types.ObjectId, unitId: Types.ObjectId): Promise<OmitMongo<UnitDetailDto>> {
         ValidateObjectIds({ companyId, unitId });
+
+        const toDto = [
+            {
+                $replaceRoot: {
+                    newRoot: {
+                        $mergeObjects: [ { id: '$_id' }, '$$ROOT' ],
+                    },
+                },
+            },
+            {
+                $project: { _id: 0, __v: 0 },
+            },
+        ];
 
         const [ maybeUnit ] = await this.model.aggregate()
             .lookup({
@@ -40,8 +54,10 @@ class UnitService extends CrudService<UnitDto> {
                             localField:   'ownerId',
                             foreignField: '_id',
                             as:           'owner',
+                            pipeline:     toDto,
                         },
                     },
+                    ...toDto,
                     {
                         $addFields: {
                             owner: { $arrayElemAt: [ '$owner', 0 ] },
@@ -54,6 +70,7 @@ class UnitService extends CrudService<UnitDto> {
                 _id:       new Types.ObjectId(unitId),
                 companyId: new Types.ObjectId(companyId),
             })
+            .append(...toDto)
             .limit(1);
 
         return InvalidateEmpty(maybeUnit);
