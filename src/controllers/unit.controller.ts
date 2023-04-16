@@ -18,7 +18,7 @@ export class UnitController {
     @SuccessResponse(200, 'Ok')
     @OperationId('listUnits')
     public async list(@Path('companyId') companyId: Types.ObjectId): Promise<UnitDto[]> {
-        return unitService.findAll({ companyId });
+        return unitService.findByCompanyId(companyId);
     }
 
     @Post('/')
@@ -40,7 +40,7 @@ export class UnitController {
     @OperationId('getUnit')
     public async getUnit(@Path('companyId') companyId: Types.ObjectId,
                          @Path() unitId: Types.ObjectId): Promise<UnitDto> {
-        return await unitService.findOne({ _id: unitId, companyId });
+        return await unitService.findDetailed(companyId, unitId);
     }
 
     @Patch('/{unitId}')
