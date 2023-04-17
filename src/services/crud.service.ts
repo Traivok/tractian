@@ -1,6 +1,6 @@
 import { Document, FilterQuery, Model, Types, UpdateQuery } from 'mongoose';
 import { InvalidateEmpty, ValidateObjectIds }               from '../lib/validation.lib';
-import { Identifiable }                        from '../dtos/identifiable.dto';
+import { Identifiable }                                     from '../dtos/identifiable.dto';
 
 export type Id = Types.ObjectId | string;
 export type Params = Id | Record<string, Id>;

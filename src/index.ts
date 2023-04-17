@@ -4,11 +4,12 @@ import swaggerUi                      from 'swagger-ui-express';
 import { RegisterRoutes }             from './routes';
 import dotenv                         from 'dotenv';
 import * as process                   from 'process';
-import mongoose                       from 'mongoose';
 import { ValidationErrorHandler }     from './middlewares/validation-error.middleware';
 import { NotFoundErrorHandler }       from './middlewares/not-found.middleware';
 import { UnknownErrorHandler }        from './middlewares/unknown-error.middleware';
 import { DuplicateKeyErrorHandler }   from './middlewares/duplicate-key.middleware';
+import mongoose                       from 'mongoose';
+import * as console                   from 'console';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Config and Init
@@ -16,9 +17,19 @@ import { DuplicateKeyErrorHandler }   from './middlewares/duplicate-key.middlewa
 dotenv.config();
 
 export const server = express();
-const port   = process.env.PORT ?? 3000;
+const port          = process.env.PORT ?? 3000;
 
-const mongooseConnection = mongoose.createConnection('mongodb://localhost:27017/tractian');
+if (process.env.NODE_ENV === 'dev') {
+    const connectionString = process.env.MONGO_CONNECTION_STR ?? 'mongodb://localhost:27017/my-db';
+    console.log('Connecting to:', connectionString);
+    mongoose.connect(connectionString, {
+            serverSelectionTimeoutMS: 2000,
+            autoIndex:                true,
+            autoCreate:               true,
+        })
+        .then(() => console.log('Connected to MongoDB'))
+        .catch(console.error);
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Middlewares

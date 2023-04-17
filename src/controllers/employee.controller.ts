@@ -19,7 +19,7 @@ export class EmployeeController {
     @SuccessResponse(200, 'Ok')
     @OperationId('listEmployees')
     public async list(@Path('companyId') companyId: Types.ObjectId): Promise<UserDto[]> {
-        return userService.findAll({ companyId });
+        return await userService.findAll({ companyId });
     }
 
     @Post('/')

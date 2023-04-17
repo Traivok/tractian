@@ -1,3 +1,8 @@
 build
 node_modules
 build.zip
+spec
+gen
+
+.idea/**
+.idea

@@ -12,7 +12,7 @@
     "resolveJsonModule": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "allowJs": true,
+    "allowJs": false,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
@@ -21,8 +21,5 @@
     "strictFunctionTypes": true,
     "alwaysStrict": true,
     "skipLibCheck": true
-  },
-  "exclude": [
-    "node_modules"
-  ]
+  }
 }

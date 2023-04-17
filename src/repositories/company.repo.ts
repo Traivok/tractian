@@ -1,5 +1,4 @@
-import { MongooseClient as client } from '../mongodb.connection';
-import { Schema, Types }            from 'mongoose';
+import mongoose, { Schema, Types }  from 'mongoose';
 import User                         from './user.repo';
 import Unit                         from './unit.repo';
 import { CompanyDto }               from '../dtos/company.dto';
@@ -24,7 +23,7 @@ CompanySchema.post('findOneAndDelete', async function (doc) {
     }
 });
 
-const Company = client.model('Company', CompanySchema);
+const Company = mongoose.connection.model('Company', CompanySchema);
 
 export { Company, CompanySchema };
 export default Company;

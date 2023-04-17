@@ -1,6 +1,5 @@
-import { MongooseClient as client } from '../mongodb.connection';
-import { Schema }                   from 'mongoose';
-import { UserDto }                  from '../dtos/user.dto';
+import mongoose, { Schema } from 'mongoose';
+import { UserDto }          from '../dtos/user.dto';
 import { ValidateError }            from '@tsoa/runtime';
 
 export const RoleValues = [ 'admin', 'technician' ] as const;
@@ -32,7 +31,7 @@ const UserSchema = new Schema<UserDto>({
     },
 });
 
-const User = client.model('User', UserSchema);
+const User = mongoose.connection.model('User', UserSchema);
 
 export { User, UserSchema };
 export default User;

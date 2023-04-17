@@ -28,10 +28,13 @@ export class CompanyController extends Controller {
     @SuccessResponse(200, 'Ok')
     @OperationId('listCompanies')
     public async list(@Query() industry?: string): Promise<CompanyDto[]> {
-        if (industry === undefined)
-            return companyService.findAll();
+        if (industry === undefined) {
+            const out = await companyService.findAll();
+            console.log({ out });
+            return out;
+        }
         else
-            return companyService.findAll({ industry });
+            return await  companyService.findAll({ industry });
     }
 
     @Post('/')
@@ -43,7 +46,7 @@ export class CompanyController extends Controller {
     })
     @OperationId('createCompany')
     public async create(@Body() body: CreateCompanyDto): Promise<CompanyDto> {
-        return await companyService.create(body);
+        return await  await companyService.create(body);
     }
 
     @Patch('/{companyId}')
@@ -55,7 +58,7 @@ export class CompanyController extends Controller {
     })
     @OperationId('createCompany')
     public async update(@Path() companyId: Types.ObjectId, @Body() body: UpdateCompanyDto): Promise<CompanyDto> {
-        return await companyService.update(companyId, body);
+        return await  await companyService.update(companyId, body);
     }
 
     @Delete('/{companyId}')
@@ -71,7 +74,7 @@ export class CompanyController extends Controller {
     @Response(400, 'Bad Request')
     @OperationId('getCompany')
     public async get(@Path('companyId') companyId: Types.ObjectId): Promise<CompanyDto> {
-        return await companyService.findOne(companyId);
+        return await  await companyService.findOne(companyId);
     }
 }
 

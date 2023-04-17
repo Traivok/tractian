@@ -26,7 +26,7 @@ export class AssetController {
     public async listAssets(@Query() healthLowerThan?: number,
                                @Query() status?: StatusType,
                                @Query() needMaintenance?: boolean): Promise<AssetDto[]> {
-        return assetService.findBy({ needMaintenance, status, healthLowerThan });
+        return await  assetService.findBy({ needMaintenance, status, healthLowerThan });
     }
 
     @Get('/units/{unitId}/assets')
@@ -37,7 +37,7 @@ export class AssetController {
                             @Query() status?: StatusType,
                             @Query() needMaintenance?: boolean): Promise<AssetDto[]> {
 
-        return assetService.findBy({ needMaintenance, status, healthLowerThan, unitId });
+        return await  assetService.findBy({ needMaintenance, status, healthLowerThan, unitId });
     }
 
     @Post('/units/{unitId}/assets')
@@ -59,7 +59,7 @@ export class AssetController {
     public async create(@Path('unitId') unitId: Types.ObjectId,
                         @Body() body: CreateAssetDto): Promise<AssetDto> {
         ValidateObjectIds({ unitId });
-        return await assetService.create({ unitId, ...body });
+        return await  await assetService.create({ unitId, ...body });
     }
 
     @Get('/units/{unitId}/assets/{assetId}')
@@ -67,7 +67,7 @@ export class AssetController {
     @OperationId('getAsset')
     public async getAsset(@Path('unitId') unitId: Types.ObjectId,
                           @Path() assetId: Types.ObjectId): Promise<AssetDto> {
-        return await assetService.findOne({ _id: assetId, unitId });
+        return await  await assetService.findOne({ _id: assetId, unitId });
     }
 
     @Patch('/units/{unitId}/assets/{assetId}')
@@ -76,7 +76,7 @@ export class AssetController {
     public async update(@Path('unitId') unitId: Types.ObjectId,
                         @Path('assetId') assetId: Types.ObjectId,
                         @Body() body: UpdateAssetDto): Promise<AssetDto> {
-        return await assetService.update({ _id: assetId, unitId }, body);
+        return await  await assetService.update({ _id: assetId, unitId }, body);
     }
 
     @Delete('/units/{unitId}/assets/{assetId}')

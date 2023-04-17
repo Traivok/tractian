@@ -1,7 +1,5 @@
-import { MongooseClient as client } from '../mongodb.connection';
-import { Schema, Types }            from 'mongoose';
-import { UnitDto }                  from '../dtos/unit.dto';
-import User                         from './user.repo';
+import mongoose, { Schema, Types } from 'mongoose';
+import { UnitDto }                 from '../dtos/unit.dto';
 import Asset                        from './asset.repo';
 
 const UnitSchema = new Schema<UnitDto>({
@@ -24,7 +22,7 @@ const UnitSchema = new Schema<UnitDto>({
     },
 });
 
-const Unit = client.model('Unit', UnitSchema);
+const Unit = mongoose.connection.model('Unit', UnitSchema);
 
 UnitSchema.post('findOneAndDelete', async function (doc) {
     if (doc !== null && '_id' in doc && Types.ObjectId.isValid(doc._id)) {

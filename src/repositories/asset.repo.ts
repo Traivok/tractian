@@ -1,7 +1,6 @@
-import { MongooseClient as client } from '../mongodb.connection';
-import { Schema }                   from 'mongoose';
-import mongooseLeanVirtuals         from 'mongoose-lean-virtuals';
-import { AssetDto }                 from '../dtos/asset.dto';
+import mongoose, { Schema } from 'mongoose';
+import mongooseLeanVirtuals from 'mongoose-lean-virtuals';
+import { AssetDto }         from '../dtos/asset.dto';
 
 export const StatusValues = [ 'Running', 'Alerting', 'Stopped' ] as const;
 export type StatusType = ( typeof StatusValues )[number]; // getsthe type union of the possible values above
@@ -71,7 +70,8 @@ AssetSchema.virtual('needMaintenance')
 
 AssetSchema.plugin(mongooseLeanVirtuals);
 
-const Asset = client.model('Asset', AssetSchema);
+const Asset = mongoose.connection.model('Asset', AssetSchema);
+// moongose.Model<AssetSchema>
 
 export { Asset, AssetSchema };
 export default Asset;
