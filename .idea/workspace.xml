@@ -5,10 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0a1ccf29-b601-408b-a424-c2d50dc889ec" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dtos/unit.dto.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/dtos/unit.dto.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/unit.services.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/unit.services.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mongodb.connection.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/mongodb.connection.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/swagger.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/swagger.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,7 +91,9 @@
         <script value="start:dev" />
       </scripts>
       <node-interpreter value="project" />
-      <envs />
+      <envs>
+        <env name="MONGO_CONNECTION_STR" value="mongodb+srv://jraf:YJU6w9tAZhO8NJJm@cluster0.hen6wzv.mongodb.net/?retryWrites=true&amp;w=majority" />
+      </envs>
       <method v="2" />
     </configuration>
   </component>
@@ -107,7 +113,8 @@
       <workItem from="1681391485340" duration="484000" />
       <workItem from="1681476759121" duration="32226000" />
       <workItem from="1681560420365" duration="8863000" />
-      <workItem from="1681596177569" duration="9749000" />
+      <workItem from="1681596177569" duration="13090000" />
+      <workItem from="1681722174884" duration="153000" />
     </task>
     <servers />
   </component>

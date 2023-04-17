@@ -7,6 +7,9 @@ dependencies:
   '@types/mongoose-lean-virtuals':
     specifier: ^0.5.3
     version: 0.5.3
+  '@vendia/serverless-express':
+    specifier: ^4.10.1
+    version: 4.10.1
   body-parser:
     specifier: ^1.20.2
     version: 1.20.2
@@ -1245,6 +1248,11 @@ packages:
       '@typescript-eslint/types': 5.57.1
       eslint-visitor-keys: 3.4.0
     dev: true
+
+  /@vendia/serverless-express@4.10.1:
+    resolution: {integrity: sha512-8FM/GnQ8bbp1fynAWLGzNIy3Hyhoevixwh2Aj8qBPpw7rkbWZ1I7RC2XhZZaTZo/1JTDlff4cDDmkgY0CzUV7g==}
+    engines: {node: '>=12'}
+    dev: false
 
   /abbrev@1.1.1:
     resolution: {integrity: sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==}

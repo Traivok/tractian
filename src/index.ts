@@ -1,22 +1,21 @@
-import express, { NextFunction, raw, Request, Response } from 'express';
-import morgan                                            from 'morgan';
-import swaggerUi                                    from 'swagger-ui-express';
-import { RegisterRoutes }                           from './routes';
-import dotenv                                       from 'dotenv';
-import * as process                                 from 'process';
-import mongoose                                     from 'mongoose';
-import { ValidateError }                            from '@tsoa/runtime';
-import { ValidationErrorHandler }                   from './middlewares/validation-error.middleware';
-import { NotFoundErrorHandler }                     from './middlewares/not-found.middleware';
-import { UnknownErrorHandler }                      from './middlewares/unknown-error.middleware';
-import { DuplicateKeyErrorHandler }                 from './middlewares/duplicate-key.middleware';
+import express, { Request, Response } from 'express';
+import morgan                         from 'morgan';
+import swaggerUi                      from 'swagger-ui-express';
+import { RegisterRoutes }             from './routes';
+import dotenv                         from 'dotenv';
+import * as process                   from 'process';
+import mongoose                       from 'mongoose';
+import { ValidationErrorHandler }     from './middlewares/validation-error.middleware';
+import { NotFoundErrorHandler }       from './middlewares/not-found.middleware';
+import { UnknownErrorHandler }        from './middlewares/unknown-error.middleware';
+import { DuplicateKeyErrorHandler }   from './middlewares/duplicate-key.middleware';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Config and Init
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 dotenv.config();
 
-const server = express();
+export const server = express();
 const port   = process.env.PORT ?? 3000;
 
 const mongooseConnection = mongoose.createConnection('mongodb://localhost:27017/tractian');
@@ -47,8 +46,6 @@ server.use(ValidationErrorHandler);
 server.use(NotFoundErrorHandler);
 server.use(DuplicateKeyErrorHandler);
 server.use(UnknownErrorHandler);
-
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Starting server
