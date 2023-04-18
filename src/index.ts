@@ -10,6 +10,7 @@ import { UnknownErrorHandler }        from './middlewares/unknown-error.middlewa
 import { DuplicateKeyErrorHandler }   from './middlewares/duplicate-key.middleware';
 import mongoose                       from 'mongoose';
 import * as console                   from 'console';
+import mongooseLeanVirtuals           from 'mongoose-lean-virtuals';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Config and Init
@@ -19,17 +20,6 @@ dotenv.config();
 export const server = express();
 const port          = process.env.PORT ?? 3000;
 
-if (process.env.NODE_ENV === 'dev') {
-    const connectionString = process.env.MONGO_CONNECTION_STR ?? 'mongodb://localhost:27017/my-db';
-    console.log('Connecting to:', connectionString);
-    mongoose.connect(connectionString, {
-            serverSelectionTimeoutMS: 2000,
-            autoIndex:                true,
-            autoCreate:               true,
-        })
-        .then(() => console.log('Connected to MongoDB'))
-        .catch(console.error);
-}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Middlewares
@@ -61,6 +51,13 @@ server.use(UnknownErrorHandler);
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Starting server
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-server.listen(port, () => {
-    console.log(`App listening on the port ${ port }`);
-});
+const connectionString = process.env.MONGO_CONNECTION_STR ?? 'mongodb://localhost:27017/my-db';
+const connectionParams = process.env.NODE_ENV === 'dev' ? { autoIndex: true, autoCreate: true } : {};
+
+mongoose.connect(connectionString, {
+        serverSelectionTimeoutMS: 2000,
+        keepAlive:                true,
+        ...connectionParams,
+    })
+    .then(() => server.listen(port, () => console.log(`App listening on the port ${ port }`)))
+    .catch(console.error);
