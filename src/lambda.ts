@@ -6,7 +6,7 @@ import console           from 'console';
 
 const connectionString = process.env.MONGO_CONNECTION_STR ?? 'mongodb://localhost:27017/my-db';
 
-mongoose.connect(connectionString, { serverSelectionTimeoutMS: 2000 })
+mongoose.connect(connectionString, { serverSelectionTimeoutMS: 2000, keepAlive: true })
     .then(() => console.log('Connected to MongoDB'))
     .catch(console.error)
 

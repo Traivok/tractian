@@ -21,8 +21,5 @@
     "strictFunctionTypes": true,
     "alwaysStrict": true,
     "skipLibCheck": true,
-    "exclude": [
-      "src/**/*.spec.ts"
-    ]
   }
 }
